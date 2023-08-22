@@ -10,10 +10,10 @@ const isModalOpenSlice = createSlice({
   name: "isModalOpen",
   initialState,
   reducers: {
-    onOpen(state, action) {
+    onOpen(state) {
       state.isOpen = true;
     },
-    onClose(state, action) {
+    onClose(state) {
       state.isOpen = false;
     },
   },

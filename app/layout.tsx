@@ -1,5 +1,5 @@
 import ClientOnly from "./components/ClientOnly";
-import Modal from "./components/modals/Modal";
+import RegisterModal from "./components/modals/RegisterModal";
 import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import { Providers } from "./redux/provider";
@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={nunito.className}>
         <Providers>
           <ClientOnly>
-            {/* <Modal isOpen /> */}
+            <RegisterModal />
             <NavBar />
           </ClientOnly>
           {children}
