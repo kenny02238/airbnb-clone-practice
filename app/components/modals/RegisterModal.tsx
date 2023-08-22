@@ -9,6 +9,7 @@ import Input from "../inputs/input";
 import Heading from "../Heading";
 import Button from "../Button";
 import Modal from "./Modal";
+import { signIn } from "next-auth/react";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
 import { onClose } from "@/app/redux/features/isModalOpen/isModalOpenSlice";
 
@@ -34,12 +35,16 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
     try {
-      // await fetch("/api/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
+      toast.error("🦄 Wow so easy!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } catch (err) {
       console.log("hey", err);
 
@@ -56,6 +61,9 @@ const RegisterModal = () => {
     }
 
     setIsLoading(false);
+  };
+  const handleGoogleLogin = async () => {
+    await signIn("google");
   };
 
   const bodyContent = (
@@ -96,7 +104,7 @@ const RegisterModal = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={handleGoogleLogin}
       />
       <Button
         outline
@@ -129,12 +137,13 @@ const RegisterModal = () => {
       </div>
     </div>
   );
+
   return (
     <>
       <ToastContainer
         position="top-center"
         transition={Slide}
-        autoClose={500}
+        autoClose={1000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
