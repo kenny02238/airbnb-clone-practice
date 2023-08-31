@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import logo from "@/public/images/logo.png";
 const Logo = () => {
   return (
     <figure className="w-[100px] aspect-[100/31.25] relative">

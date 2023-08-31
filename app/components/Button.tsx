@@ -39,6 +39,7 @@ const Button: React.FC<ButtonProps> = ({
         ${small ? "font-light" : "font-semibold"}
         ${small ? "border-[1px]" : "border-2"}
       `}
+      name={`${label} button`}
     >
       {Icon && (
         <Icon

@@ -1,5 +1,7 @@
-import ClientOnly from "./components/ClientOnly";
-import RegisterModal from "./components/modals/RegisterModal";
+import { lazy } from "react";
+// import LoginModal from "./components/modals/LoginModal";
+// import RegisterModal from "./components/modals/RegisterModal";
+// import UploadToAirbnbModal from "./components/modals/UploadToAirbnbModal";
 import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import { Providers } from "./redux/provider";
@@ -12,6 +14,13 @@ export const metadata = {
   description: "Air bnb clone",
 };
 
+const LoginModal = lazy(() => import("@/app/components/modals/LoginModal"));
+const RegisterModal = lazy(
+  () => import("@/app/components/modals/RegisterModal")
+);
+const UploadToAirbnbModal = lazy(
+  () => import("@/app/components/modals/UploadToAirbnbModal")
+);
 export default function RootLayout({
   children,
 }: {
@@ -21,10 +30,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={nunito.className}>
         <Providers>
-          <ClientOnly>
-            <RegisterModal />
-            <NavBar />
-          </ClientOnly>
+          <RegisterModal />
+          <LoginModal />
+          <UploadToAirbnbModal />
+          <NavBar currentUser={{ name: "Kenny" }} />
           {children}
         </Providers>
       </body>

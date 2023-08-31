@@ -144,6 +144,8 @@ const Modal: React.FC<ModalProps> = ({
                     left-9
                   "
                   onClick={handleClose}
+                  name="closeBtn"
+                  aria-label={`close ${title} button`}
                 >
                   <IoMdClose size={18} />
                 </button>

@@ -11,15 +11,20 @@ import Button from "../Button";
 import Modal from "./Modal";
 import { signIn } from "next-auth/react";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
-import { onClose } from "@/app/redux/features/isModalOpen/isModalOpenSlice";
+import { onClose } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
+import { onOpen } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 
 const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const isOpen = useAppSelector((state) => state.isModalOpen.isOpen);
+  const isOpen = useAppSelector(
+    (state) => state.isRegisterModalOpenSlice.isOpen
+  );
+
   const dispatch = useAppDispatch();
-
-  const modalClose = useCallback(() => dispatch(onClose()), [dispatch]);
-
+  const registerModalClose = useCallback(() => dispatch(onClose()), [dispatch]);
+  const loginModalOpen = useCallback(() => {
+    return dispatch(onOpen());
+  }, [dispatch]);
   const {
     register,
     handleSubmit,
@@ -46,8 +51,6 @@ const RegisterModal = () => {
         theme: "colored",
       });
     } catch (err) {
-      console.log("hey", err);
-
       toast.error("🦄 Wow so easy!", {
         position: "top-center",
         autoClose: 500,
@@ -62,6 +65,10 @@ const RegisterModal = () => {
 
     setIsLoading(false);
   };
+  const onToggle = useCallback(() => {
+    registerModalClose();
+    loginModalOpen();
+  }, [registerModalClose, loginModalOpen]);
   const handleGoogleLogin = async () => {
     await signIn("google");
   };
@@ -123,7 +130,7 @@ const RegisterModal = () => {
         <p>
           Already have an account?
           <span
-            onClick={() => {}}
+            onClick={onToggle}
             className="
                 text-neutral-800
                 cursor-pointer 
@@ -155,13 +162,13 @@ const RegisterModal = () => {
       />
       <Modal
         isOpen={isOpen}
-        onClose={modalClose}
+        onClose={registerModalClose}
         onSubmit={handleSubmit(onSubmit)}
         actionLabel="Continue"
         title="Register"
         body={bodyContent}
         footer={footerContent}
-        secondaryAction={modalClose}
+        secondaryAction={registerModalClose}
         secondaryActionLabel="Cancel"
       />
     </>

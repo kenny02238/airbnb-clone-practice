@@ -2,7 +2,7 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -19,6 +19,24 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn(e) {
+      try {
+        const foo = await fetch(
+          "http://192.168.68.118:8000/users/dj-rest-auth/hello/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              access_token: e.account?.id_token,
+            }),
+          }
+        );
+        const res = await foo.json();
+        return "/daniel";
+      } catch (err) {
+        console.log(err);
+      }
       return "/";
     },
   },
