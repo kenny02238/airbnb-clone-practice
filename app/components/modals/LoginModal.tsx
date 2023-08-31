@@ -11,7 +11,7 @@ import { onClose } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenS
 import { onOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 
 import Modal from "./Modal";
-import Input from "../inputs/input";
+import Input from "../inputs/Input";
 import Heading from "../Heading";
 import Button from "../Button";
 

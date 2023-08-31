@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Input from "../inputs/input";
+import Input from "../inputs/Input";
 import Heading from "../Heading";
 import Button from "../Button";
 import Modal from "./Modal";

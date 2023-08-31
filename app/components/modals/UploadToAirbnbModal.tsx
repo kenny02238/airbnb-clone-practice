@@ -42,7 +42,13 @@ const UploadToAirbnbModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       categories: "",
-      location: "",
+      location: {
+        flag: "🇹🇼",
+        label: "Taiwan",
+        latlng: [23.5, 121],
+        region: "Asia",
+        value: "TW",
+      },
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
@@ -54,7 +60,10 @@ const UploadToAirbnbModal = () => {
   });
 
   const location = watch("location");
-  console.log(location);
+  const guestCount = watch("guestCount");
+  const roomCount = watch("roomCount");
+  const bathroomCount = watch("bathroomCount");
+  const imgSrc = watch("imgSrc");
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -91,6 +100,10 @@ const UploadToAirbnbModal = () => {
             register={register}
             location={location}
             setValue={setValue}
+            guestCount={guestCount}
+            roomCount={roomCount}
+            bathroomCount={bathroomCount}
+            imgSrc={imgSrc}
           />
         }
         title="Airbnb your home"

@@ -1,7 +1,6 @@
-import { lazy } from "react";
-// import LoginModal from "./components/modals/LoginModal";
-// import RegisterModal from "./components/modals/RegisterModal";
-// import UploadToAirbnbModal from "./components/modals/UploadToAirbnbModal";
+import LoginModal from "./components/modals/LoginModal";
+import RegisterModal from "./components/modals/RegisterModal";
+import UploadToAirbnbModal from "./components/modals/UploadToAirbnbModal";
 import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import { Providers } from "./redux/provider";
@@ -14,13 +13,6 @@ export const metadata = {
   description: "Air bnb clone",
 };
 
-const LoginModal = lazy(() => import("@/app/components/modals/LoginModal"));
-const RegisterModal = lazy(
-  () => import("@/app/components/modals/RegisterModal")
-);
-const UploadToAirbnbModal = lazy(
-  () => import("@/app/components/modals/UploadToAirbnbModal")
-);
 export default function RootLayout({
   children,
 }: {

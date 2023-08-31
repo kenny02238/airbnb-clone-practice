@@ -13,7 +13,7 @@ interface CountrySelectValue {
 }
 
 interface CountrySelectProps {
-  value: string;
+  value: CountrySelectValue;
   onChange: UseFormSetValue<FieldValues>;
 }
 

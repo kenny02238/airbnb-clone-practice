@@ -8,7 +8,6 @@ const Logo = () => {
         className="hidden md:block cursor-pointer"
         fill
         sizes="(max-width: 1440px) 7vw, (max-width: 768px) 0vw"
-        priority
         src="/images/logo.png"
       />
     </figure>

@@ -1,10 +1,17 @@
 "use client";
+
+import { useMemo } from "react";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 import CountrySelect from "../inputs/CountrySelect";
-import { UseFormSetValue } from "react-hook-form";
+import ImageUpload from "../inputs/ImageUpload";
+import Input from "../inputs/Input";
+import dynamic from "next/dynamic";
+import Counter from "../inputs/Counter";
+import { UseFormSetValue, UseFormRegister } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
 import Heading from "../Heading";
+
 enum STEPS {
   CATEGORY,
   LOCATION,
@@ -13,14 +20,25 @@ enum STEPS {
   DESCRIPTION,
   PRICE,
 }
+export interface Location {
+  flag: string;
+  label: string;
+  latlng: number[];
+  region: string;
+  value: string;
+}
 
 interface BodyContentProps {
   STEPS: typeof STEPS;
   step: STEPS;
-  location: string;
+  location: Location;
   setValue: UseFormSetValue<FieldValues>;
-  register: {};
+  register: UseFormRegister<FieldValues>;
   errors: {};
+  guestCount: number;
+  roomCount: number;
+  bathroomCount: number;
+  imgSrc: string;
 }
 const BodyContent: React.FC<BodyContentProps> = ({
   STEPS,
@@ -29,7 +47,20 @@ const BodyContent: React.FC<BodyContentProps> = ({
   errors,
   setValue,
   location,
+  guestCount,
+  roomCount,
+  bathroomCount,
+  imgSrc,
 }) => {
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("./Map"), {
+        ssr: false,
+      }),
+    [location]
+  );
+  console.log("location", location, typeof location);
+
   if (step === STEPS.LOCATION) {
     return (
       <div className="flex flex-col gap-8">
@@ -38,7 +69,7 @@ const BodyContent: React.FC<BodyContentProps> = ({
           subtitle="Help guests find you!"
         />
         <CountrySelect value={location} onChange={setValue} />
-        {/* <Map center={location?.latlng} /> */}
+        <Map center={location?.latlng} />
       </div>
     );
   }
@@ -50,26 +81,26 @@ const BodyContent: React.FC<BodyContentProps> = ({
           title="Share some basics about your place"
           subtitle="What amenitis do you have?"
         />
-        {/* <Counter
-          onChange={(value) => setCustomValue("guestCount", value)}
+        <Counter
+          onChange={(value) => setValue("guestCount", value)}
           value={guestCount}
           title="Guests"
           subtitle="How many guests do you allow?"
         />
         <hr />
         <Counter
-          onChange={(value) => setCustomValue("roomCount", value)}
+          onChange={(value) => setValue("roomCount", value)}
           value={roomCount}
           title="Rooms"
           subtitle="How many rooms do you have?"
         />
         <hr />
         <Counter
-          onChange={(value) => setCustomValue("bathroomCount", value)}
+          onChange={(value) => setValue("bathroomCount", value)}
           value={bathroomCount}
           title="Bathrooms"
           subtitle="How many bathrooms do you have?"
-        /> */}
+        />
       </div>
     );
   }
@@ -81,10 +112,10 @@ const BodyContent: React.FC<BodyContentProps> = ({
           title="Add a photo of your place"
           subtitle="Show guests what your place looks like!"
         />
-        {/* <ImageUpload
-          onChange={(value) => setCustomValue("imageSrc", value)}
-          value={imageSrc}
-        /> */}
+        <ImageUpload
+          onChange={(value) => setValue("imageSrc", value)}
+          value={imgSrc}
+        />
       </div>
     );
   }
@@ -96,10 +127,10 @@ const BodyContent: React.FC<BodyContentProps> = ({
           title="How would you describe your place?"
           subtitle="Short and sweet works best!"
         />
-        {/* <Input
+        <Input
           id="title"
           label="Title"
-          disabled={isLoading}
+          // disabled={isLoading}
           register={register}
           errors={errors}
           required
@@ -108,11 +139,11 @@ const BodyContent: React.FC<BodyContentProps> = ({
         <Input
           id="description"
           label="Description"
-          disabled={isLoading}
+          // disabled={isLoading}
           register={register}
           errors={errors}
           required
-        /> */}
+        />
       </div>
     );
   }
@@ -124,16 +155,16 @@ const BodyContent: React.FC<BodyContentProps> = ({
           title="Now, set your price"
           subtitle="How much do you charge per night?"
         />
-        {/* <Input
+        <Input
           id="price"
           label="Price"
           formatPrice
           type="number"
-          disabled={isLoading}
+          // disabled={isLoading}
           register={register}
           errors={errors}
           required
-        /> */}
+        />
       </div>
     );
   }
