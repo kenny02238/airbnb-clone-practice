@@ -25,7 +25,7 @@ export default function RootLayout({
           <RegisterModal />
           <LoginModal />
           <UploadToAirbnbModal />
-          <NavBar currentUser={{ name: "Kenny" }} />
+          <NavBar currentUser={{ name: "kenny" }} />
           {children}
         </Providers>
       </body>
