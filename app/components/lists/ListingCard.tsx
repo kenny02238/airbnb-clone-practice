@@ -1,6 +1,7 @@
 "use client";
 
 import { SafeUser, SafeListing } from "@/app/types";
+import HeartButton from "./HeartButton";
 import Image from "next/image";
 
 interface ListingCardProps {
@@ -44,10 +45,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
             right-3
           "
             >
-              {/* <HeartButton 
-              listingId={data.id} 
-              currentUser={currentUser}
-            /> */}
+              <HeartButton listingId={data.id} currentUser={currentUser} />
             </div>
           </div>
           <div className="font-semibold text-lg">
@@ -60,8 +58,8 @@ const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
           <div className="flex flex-row items-center gap-1">
             <div className="font-semibold">$ {data.price}</div>
             {/* {!reservation && (
+              )} */}
             <div className="font-light">night</div>
-          )} */}
           </div>
           {/* {onAction && actionLabel && (
           <Button
