@@ -22,6 +22,7 @@ enum STEPS {
 
 const UploadToAirbnbModal = () => {
   const [step, setStep] = useState(STEPS.CATEGORY);
+
   const isUploadModalOpen = useAppSelector(
     (state) => state.isUploadToAirbnbModalOpenSlice.isOpen
   );
@@ -52,7 +53,7 @@ const UploadToAirbnbModal = () => {
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
-      imgSrc: "",
+      image: undefined,
       price: 1,
       title: "",
       description: "",
@@ -63,7 +64,7 @@ const UploadToAirbnbModal = () => {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
-  const imgSrc = watch("imgSrc");
+  const image = watch("image");
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -72,15 +73,41 @@ const UploadToAirbnbModal = () => {
     setStep((value) => value + 1);
   };
   const actionLabel = useMemo(() => {
-    if (step === STEPS.PRICE) "Create";
+    if (step === STEPS.PRICE) {
+      return "Create";
+    }
     return "Next";
   }, [step]);
   const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.CATEGORY) undefined;
     return "Back";
   }, [step]);
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (step !== STEPS.PRICE) onNext();
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log("dddd", data);
+
+    if (step !== STEPS.PRICE) {
+      return onNext();
+    }
+    try {
+      const formData = new FormData();
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          formData.append(key, data[key]);
+        }
+      }
+      // formData.append("file",data)
+      const postData = await fetch("https://air.pethelp-api.store/listings/", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer `,
+        },
+        body: formData,
+      });
+      const response = await postData.json();
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -103,7 +130,7 @@ const UploadToAirbnbModal = () => {
             guestCount={guestCount}
             roomCount={roomCount}
             bathroomCount={bathroomCount}
-            imgSrc={imgSrc}
+            image={image}
           />
         }
         title="Airbnb your home"
