@@ -37,6 +37,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
             "
               src={data.imageSrc}
               alt="Listing"
+              priority
             />
             <div
               className="
