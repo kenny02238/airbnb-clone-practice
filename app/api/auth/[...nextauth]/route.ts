@@ -13,7 +13,7 @@ const authOptions: AuthOptions = {
       type: "credentials",
       name: "My-project",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        username: { label: "Username", type: "text", placeholder: "" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -86,8 +86,7 @@ const authOptions: AuthOptions = {
       } catch (err) {
         console.log(err);
       }
-
-      return "/";
+      return true;
     },
   },
 };
