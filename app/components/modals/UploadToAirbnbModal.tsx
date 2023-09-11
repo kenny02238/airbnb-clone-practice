@@ -9,7 +9,7 @@ import {
 } from "react-hook-form";
 import { onCloseUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
 import Modal from "./Modal";
-import BodyContent from "../uploadToAirBnbBodyContent/BodyContent";
+import BodyContent from "./uploadToAirBnbBodyContent/BodyContent";
 
 enum STEPS {
   CATEGORY,
@@ -42,7 +42,7 @@ const UploadToAirbnbModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      categories: "",
+      category: "",
       location: {
         flag: "🇹🇼",
         label: "Taiwan",
@@ -65,6 +65,7 @@ const UploadToAirbnbModal = () => {
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
   const image = watch("image");
+  const category = watch("category");
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -83,23 +84,21 @@ const UploadToAirbnbModal = () => {
     return "Back";
   }, [step]);
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log("dddd", data);
+    console.log("data", data);
 
     if (step !== STEPS.PRICE) {
       return onNext();
     }
     try {
       const formData = new FormData();
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          formData.append(key, data[key]);
-        }
-      }
-      // formData.append("file",data)
-      const postData = await fetch("https://air.pethelp-api.store/listings/", {
+
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, key === "location" ? value.value : value);
+      });
+      const postData = await fetch("http://192.168.68.120:8000/listings/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer `,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzOTk4Mjc2LCJpYXQiOjE2OTM5OTc5NzYsImp0aSI6IjI2MGIzYzAwMzhlODQ4Y2Y5Y2FkNjgwZTJhYzExNTY5IiwidXNlcl9pZCI6Mn0.Y-BV1m0aOuj0qSkPQ-bPbd4IzyYuVvcEtGyD77G4WZA`,
         },
         body: formData,
       });
@@ -130,6 +129,7 @@ const UploadToAirbnbModal = () => {
             guestCount={guestCount}
             roomCount={roomCount}
             bathroomCount={bathroomCount}
+            category={category}
             image={image}
           />
         }

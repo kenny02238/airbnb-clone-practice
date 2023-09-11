@@ -23,6 +23,7 @@
     "postcss": "8.4.27",
     "query-string": "^8.1.0",
     "react": "18.2.0",
+    "react-date-range": "^1.4.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
@@ -36,6 +37,7 @@
     "world-countries": "^4.0.0"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.4"
+    "@types/leaflet": "^1.9.4",
+    "@types/react-date-range": "^1.4.4"
   }
 }

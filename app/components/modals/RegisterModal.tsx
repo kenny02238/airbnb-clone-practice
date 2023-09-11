@@ -40,18 +40,13 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
     try {
-      toast.error("🦄 Wow so easy!", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
+      const res = await fetch("/api/user/register", {
+        method: "POST",
+        body: JSON.stringify(data),
       });
+      console.log(res);
     } catch (err) {
-      toast.error("🦄 Wow so easy!", {
+      toast.error(`🦄 Wow so easy! ${err}`, {
         position: "top-center",
         autoClose: 500,
         hideProgressBar: false,
@@ -77,16 +72,16 @@ const RegisterModal = () => {
     <div className="flex flex-col gap-4">
       <Heading title="Welcome to Airbnb" subtitle="Create an account!" />
       <Input
-        id="email"
-        label="Email"
+        id="name"
+        label="Name"
         disabled={isLoading}
         register={register}
         errors={errors}
         required
       />
       <Input
-        id="name"
-        label="Name"
+        id="email"
+        label="Email"
         disabled={isLoading}
         register={register}
         errors={errors}

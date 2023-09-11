@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/app/redux/hook";
 import { onOpen as onRegisterOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 import { onOpen as onLoginOpen } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 import { onOpenUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
+import { useSession } from "next-auth/react";
 import { SafeUser } from "@/app/types";
 interface UserMenu {
   currentUser?: SafeUser | null;
@@ -14,6 +15,9 @@ interface UserMenu {
 
 const UserMenu: React.FC<UserMenu> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data } = useSession();
+  console.log("UserDataFromNextAuth", data);
+
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);

@@ -3,17 +3,19 @@
 import { SafeUser, SafeListing } from "@/app/types";
 import HeartButton from "./HeartButton";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface ListingCardProps {
-  currentUser: SafeUser;
+  currentUser?: SafeUser;
   data: SafeListing;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
+  const router = useRouter();
   return (
     <div>
       <div
-        //   onClick={() => router.push(`/listings/${data.id}`)}
+        onClick={() => router.push(`/listings/${data.id}`)}
         className="col-span-1 cursor-pointer group"
       >
         <div className="flex flex-col gap-2 w-full">

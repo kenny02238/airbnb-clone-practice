@@ -5,6 +5,7 @@ import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import { Providers } from "./redux/provider";
 import { Nunito } from "next/font/google";
+import { getServerSession } from "next-auth";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -13,19 +14,20 @@ export const metadata = {
   description: "Air bnb clone",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body className={nunito.className}>
-        <Providers>
+        <Providers session={session}>
           <RegisterModal />
           <LoginModal />
           <UploadToAirbnbModal />
-          <NavBar currentUser={{ name: "kenny" }} />
+          <NavBar />
           {children}
         </Providers>
       </body>

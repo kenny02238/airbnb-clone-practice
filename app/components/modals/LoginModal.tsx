@@ -7,6 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { onClose } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 import { onOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 
@@ -41,25 +43,25 @@ const LoginModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
-
-    signIn("credentials", {
-      ...data,
-      redirect: false,
-    }).then((callback) => {
-      setIsLoading(false);
-
-      if (callback?.ok) {
-        // toast.success('Logged in');
-        router.refresh();
-        loginModalClose();
-      }
-
-      if (callback?.error) {
-        // toast.error(callback.error);
-      }
-    });
+    try {
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+      });
+    } catch (err) {
+      toast.error(`🦄 Wow so easy! ${err}`, {
+        position: "top-center",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
   const handleGoogleLogin = async () => {
     await signIn("google");
@@ -88,6 +90,19 @@ const LoginModal = () => {
         register={register}
         errors={errors}
         required
+      />
+      <ToastContainer
+        position="top-center"
+        transition={Slide}
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
       />
     </div>
   );

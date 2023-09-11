@@ -1,16 +1,16 @@
 "use client";
 
 import { useMemo } from "react";
-import { categories } from "../navbar/Categories";
-import CategoryInput from "../inputs/CategoryInput";
-import CountrySelect from "../inputs/CountrySelect";
-import ImageUpload from "../inputs/ImageUpload";
-import Input from "../inputs/Input";
+import { categories } from "../../navbar/Categories";
+import CategoryInput from "../../inputs/CategoryInput";
+import CountrySelect from "../../inputs/CountrySelect";
+import ImageUpload from "../../inputs/ImageUpload";
+import Input from "../../inputs/Input";
 import dynamic from "next/dynamic";
-import Counter from "../inputs/Counter";
+import Counter from "../../inputs/Counter";
 import { UseFormSetValue, UseFormRegister } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
-import Heading from "../Heading";
+import Heading from "../../Heading";
 
 enum STEPS {
   CATEGORY,
@@ -38,6 +38,7 @@ interface BodyContentProps {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
+  category: string;
   image: string;
 }
 const BodyContent: React.FC<BodyContentProps> = ({
@@ -49,6 +50,7 @@ const BodyContent: React.FC<BodyContentProps> = ({
   location,
   guestCount,
   roomCount,
+  category,
   bathroomCount,
   image,
 }) => {
@@ -183,8 +185,8 @@ const BodyContent: React.FC<BodyContentProps> = ({
           {categories.map((item) => (
             <div key={item.label} className="col-span-1">
               <CategoryInput
-                onClick={(category) => {}}
-                // selected={category === item.label}
+                onClick={(category) => setValue("category", category)}
+                selected={category === item.label}
                 label={item.label}
                 icon={item.icon}
               />
