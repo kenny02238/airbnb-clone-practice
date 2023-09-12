@@ -103,7 +103,6 @@ const UploadToAirbnbModal = () => {
         body: formData,
       });
       const response = await postData.json();
-      console.log(response);
     } catch (err) {
       console.log(err);
     }

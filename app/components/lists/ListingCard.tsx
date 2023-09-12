@@ -30,6 +30,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
           >
             <Image
               fill
+              sizes="100vw"
               className="
               object-cover 
               h-full 

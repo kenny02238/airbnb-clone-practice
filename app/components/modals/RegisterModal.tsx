@@ -44,8 +44,8 @@ const RegisterModal = () => {
         method: "POST",
         body: JSON.stringify(data),
       });
-      console.log(res);
     } catch (err) {
+      console.count();
       toast.error(`🦄 Wow so easy! ${err}`, {
         position: "top-center",
         autoClose: 500,

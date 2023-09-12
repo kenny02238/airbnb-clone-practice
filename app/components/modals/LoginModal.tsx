@@ -46,14 +46,15 @@ const LoginModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
     try {
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         email: data.email,
         password: data.password,
+        redirect: false,
       });
     } catch (err) {
-      toast.error(`🦄 Wow so easy! ${err}`, {
+      toast.error(`🦄 ${err}`, {
         position: "top-center",
-        autoClose: 500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

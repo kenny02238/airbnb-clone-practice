@@ -8,6 +8,7 @@ const Logo = () => {
         className="hidden md:block cursor-pointer h-full w-full"
         fill
         src="/images/logo.png"
+        sizes="100vw"
       />
     </figure>
   );
