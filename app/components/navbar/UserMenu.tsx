@@ -16,6 +16,7 @@ interface UserMenu {
 const UserMenu: React.FC<UserMenu> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data } = useSession();
+  console.log("Session data", data);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);

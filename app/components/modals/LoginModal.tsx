@@ -46,15 +46,24 @@ const LoginModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
     try {
-      const res = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
+      const res = await toast.promise(
+        signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        }),
+        {
+          pending: "Promise is pending",
+        }
+      );
+
+      console.log("res", res);
     } catch (err) {
+      console.log(err);
+
       toast.error(`🦄 ${err}`, {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 100000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -63,6 +72,7 @@ const LoginModal = () => {
         theme: "colored",
       });
     }
+    setIsLoading(false);
   };
   const handleGoogleLogin = async () => {
     await signIn("google");
@@ -91,19 +101,6 @@ const LoginModal = () => {
         register={register}
         errors={errors}
         required
-      />
-      <ToastContainer
-        position="top-center"
-        transition={Slide}
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
       />
     </div>
   );

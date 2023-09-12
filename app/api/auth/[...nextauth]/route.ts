@@ -14,10 +14,13 @@ const authOptions: AuthOptions = {
       type: "credentials",
       name: "My-project",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "" },
+        email: { label: "Username", type: "text", placeholder: "" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        const body = {
+          email: credentials?.email,
+        };
         try {
           console.log(credentials);
 
@@ -27,7 +30,7 @@ const authOptions: AuthOptions = {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              email: credentials?.username,
+              email: credentials?.email,
               password: credentials?.password,
             }),
           });
@@ -54,31 +57,27 @@ const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn(e) {
-      if (e.credentials) {
-        cookies().set("token", "asjdhflkjashdlkjfhlasjdf");
-        return "/?category=Countryside";
-      }
-      try {
-        const socialLogin = await fetch(
-          `${process.env.API_URL}users/social-login/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              access_token: e.account?.id_token,
-            }),
-          }
-        );
-        const res = await socialLogin.json();
-        cookies().set("token", res.access);
-        return true;
-      } catch (err) {
-        console.log(err);
-      }
-      return true;
+    async session({ session, token }) {
+      console.log("session", session, token);
+
+      // Send properties to the client, like an access_token from a provider.
+      // session.accessToken = "yo";
+      // session.refreshToken = "bro";
+      // session.idToken = "好奇";
+      // session.provider = "砥礪朽死啦";
+      // session.id = token.id;
+      return session;
+    },
+    async jwt({ token, user, account }) {
+      // Persist the OAuth access_token to the token right after signin
+      token.accessToken = "adsf";
+      token.refreshToken = "adsf";
+      token.idToken = "asdf";
+      token.provider = "asdf";
+      // if (user) {
+      //   token.id = user.id.toString();
+      // }
+      return token;
     },
   },
 };
