@@ -1,6 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { cookies } from "next/headers";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -46,32 +47,15 @@ const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, account }) {
-      // Persist the OAuth access_token to the token right after signin
-      if (account) {
-        token.accessToken = account.access_token;
-      }
-      return token;
-    },
-    async session({ session, token, user }) {
-      // Send properties to the client, like an access_token from a provider.
-      console.log("first________________", session);
-
-      return session;
-    },
     async signIn(e) {
-      console.log("signIn", e);
       if (e.credentials) {
-        console.log("if 條件---------------------------------");
-        return true;
+        cookies().set("token", "asjdhflkjashdlkjfhlasjdf");
+        return "/?category=Countryside";
       }
       try {
-        console.log(" try block ------------------------");
-
         const foo = await fetch(`${process.env.API_URL}users/social-login/`, {
           method: "POST",
           headers: {
@@ -82,6 +66,7 @@ const authOptions: AuthOptions = {
           }),
         });
         const res = await foo.json();
+        cookies().set("token", res.access);
         return true;
       } catch (err) {
         console.log(err);
