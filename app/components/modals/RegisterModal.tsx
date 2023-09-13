@@ -13,6 +13,7 @@ import { signIn } from "next-auth/react";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
 import { onClose } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 import { onOpen } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
+import { responseHandler } from "@/utils/responseHandler";
 
 const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,13 +44,26 @@ const RegisterModal = () => {
       const res = await fetch("/api/user/register", {
         method: "POST",
         body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      console.log("res", res);
-    } catch (err) {
-      console.log("123");
-      toast.error(`🦄 Wow so easy! ${err}`, {
+
+      const response = await responseHandler(res);
+      toast.success(`🦄成功註冊🦄`, {
         position: "top-center",
-        autoClose: 500,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } catch (err) {
+      toast.error(`🦄${err}🦄`, {
+        position: "top-center",
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
