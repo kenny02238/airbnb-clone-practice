@@ -10,10 +10,11 @@ async function performRegistrationRequest(body: any) {
       body,
     });
     const resMessage = await res.json();
+
     if (res.ok) {
       return resMessage;
     } else {
-      throw new Error(`Failed to register: ${resMessage}`);
+      throw new Error(`Failed to register: ${resMessage.error}`);
     }
   } catch (error) {
     throw new Error(`Failed to connect to the server: ${error}`);
@@ -25,8 +26,10 @@ export async function POST(request: Request) {
 
   try {
     const response = await performRegistrationRequest(req);
+    console.log("response", response);
+
     return NextResponse.json(response);
   } catch (error) {
-    return NextResponse.json({ error: `${error}` }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
