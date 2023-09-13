@@ -9,11 +9,12 @@ import { onOpen as onLoginOpen } from "@/app/redux/features/isLoginModalOpen/isL
 import { onOpenUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
 import { useSession } from "next-auth/react";
 import { SafeUser } from "@/app/types";
+import { signOut } from "next-auth/react";
 interface UserMenu {
   currentUser?: SafeUser | null;
 }
 
-const UserMenu: React.FC<UserMenu> = ({ currentUser }) => {
+const UserMenu: React.FC<UserMenu> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data } = useSession();
   console.log("Session data", data);
@@ -36,7 +37,7 @@ const UserMenu: React.FC<UserMenu> = ({ currentUser }) => {
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
-          onClick={currentUser ? uploadModalOpen : loginModalOpen}
+          onClick={data?.user ? uploadModalOpen : loginModalOpen}
           className=" hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
         >
           Airbnb your home
@@ -47,14 +48,14 @@ const UserMenu: React.FC<UserMenu> = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar image={data?.user?.image ? data?.user?.image : null} />
           </div>
         </div>
       </div>
       {isOpen && (
         <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
-            {!currentUser ? (
+            {!data?.user ? (
               <>
                 <MenuItem onClick={loginModalOpen} label="Login" />
                 <MenuItem onClick={registerModalOpen} label="SignUp" />
@@ -67,7 +68,7 @@ const UserMenu: React.FC<UserMenu> = ({ currentUser }) => {
                 <MenuItem label="My properties" onClick={() => {}} />
                 <MenuItem label="Airbnb your home" onClick={uploadModalOpen} />
                 <hr />
-                <MenuItem label="Logout" onClick={() => {}} />
+                <MenuItem label="Logout" onClick={() => signOut()} />
               </>
             )}
           </div>

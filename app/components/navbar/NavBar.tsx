@@ -9,7 +9,7 @@ import { SafeUser } from "@/app/types";
 interface NavBarProps {
   currentUser?: SafeUser | null;
 }
-const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
+const NavBar: React.FC<NavBarProps> = () => {
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div className="py-4 border-b-[1px]">
@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo />
             <Search />
-            <UserMenu currentUser={currentUser} />
+            <UserMenu />
           </div>
         </Container>
         <Categories />

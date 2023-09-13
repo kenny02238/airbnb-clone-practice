@@ -49,27 +49,37 @@ const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }) {
-      console.log("sessionUser", token);
+      // console.log("sessionUser", token);
       session.user = token.user;
-      // session.accessToken = token.accessToken as string;
-      // session.refreshToken = token.refreshToken as string;
-
       return session;
     },
     async jwt({ user, token, account }) {
-      if (account?.type === "credentials") {
-        // token.accessToken = user.access;
-        // token.userData = user.user;
-      }
+      // console.log("Jwt", user, token, account);
 
-      // Persist the OAuth access_token to the token right after signin
-      // token.accessToken = "adsf";
-      // token.refreshToken = "adsf";
-      // token.idToken = "asdf";
-      // token.provider = "asdf";
-      // if (user) {
-      //   token.id = user.id.toString();
-      // }
+      if (account?.type === "credentials") {
+        token.accessToken = user.access;
+        token.user = user.user;
+      }
+      if (account?.provider === "google") {
+        try {
+          const login = await fetch(
+            `${process.env.API_URL}users/social-login/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                access_token: account.id_token,
+              }),
+            }
+          );
+          const user = await login.json();
+          token.accessToken = user.access;
+        } catch (err) {
+          console.log(err);
+        }
+      }
       return token;
     },
   },

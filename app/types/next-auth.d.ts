@@ -13,15 +13,16 @@ export interface userData {
   favorites: any[];
 }
 declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
   interface Profile {
     email_verified: boolean;
   }
   interface Session {
     accessToken: string;
     user: userData | DefaultSession["user"];
+  }
+  interface User {
+    access: string;
+    user: userData;
   }
 }
 
