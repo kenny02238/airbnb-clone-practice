@@ -2,33 +2,24 @@ import NextAuth from "next-auth";
 import { JWT, User } from "next-auth/jwt";
 import { Session, DefaultSession } from "next-auth";
 import Providers from "next-auth/providers";
-export interface userData {
-  access: string;
-  id: number;
-  email: string;
-  name: string;
-  image: string;
-  created_at: string;
-  updated_at: string;
-  favorites: any[];
-}
+import { UserData } from ".";
 declare module "next-auth" {
   interface Profile {
     email_verified: boolean;
   }
   interface Session {
     accessToken: string;
-    user: userData | DefaultSession["user"];
+    user: UserData | DefaultSession["user"];
   }
   interface User {
     access: string;
-    user: userData;
+    user: UserData;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    user?: userData;
+    user?: UserData;
     idToken?: string;
     accessToken?: string;
     refreshToken?: string;

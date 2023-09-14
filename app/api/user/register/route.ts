@@ -10,9 +10,8 @@ export async function POST(request: Request) {
       },
       body,
     });
-    console.log("response", response);
 
-    return NextResponse.json(response, { status: response.status });
+    return response;
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

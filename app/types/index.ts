@@ -2,6 +2,26 @@ export type SafeUser = {
   name?: string;
 };
 
+export interface AuthDefaultUserData {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+}
+export interface UserData {
+  access?: string;
+  id: number | undefined;
+  email: string;
+  name: string;
+  image: string;
+  created_at: string;
+  updated_at: string;
+  favorites: any[];
+}
+export interface GoogleUserData {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+}
 export type SafeListing = {
   id: string;
   title: string;

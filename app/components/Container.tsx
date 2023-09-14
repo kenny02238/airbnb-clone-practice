@@ -1,11 +1,28 @@
 "use client";
 
-import React from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import {
+  setToken,
+  setUser,
+} from "../redux/features/userSession/userSessionSlice";
+import { useSession } from "next-auth/react";
 interface ContainerProps {
   children: React.ReactNode;
 }
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
+  const { data } = useSession();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const getToken = async () => {
+      const res = await fetch("/api/user/getToken");
+      const response = await res.json();
+      dispatch(setToken(response));
+    };
+    getToken();
+    dispatch(setUser(data?.user));
+  }, [data, dispatch]);
   return (
     <div
       className="

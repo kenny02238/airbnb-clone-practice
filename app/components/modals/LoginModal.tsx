@@ -57,10 +57,8 @@ const LoginModal = () => {
         }
       );
 
-      console.log("res", res);
+      loginModalClose();
     } catch (err) {
-      console.log(err);
-
       toast.error(`🦄 ${err}`, {
         position: "top-center",
         autoClose: 100000,

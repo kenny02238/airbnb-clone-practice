@@ -1,113 +1,20 @@
+import { getAllListings } from "@/utils/getListings";
 import Container from "./components/Container";
 import ListingCard from "./components/lists/ListingCard";
 import house from "@/public/images/house.jpg";
-
-const listings = [
-  {
-    id: "1",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-  {
-    id: "2",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-  {
-    id: "3",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-  {
-    id: "4",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-  {
-    id: "5",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-  {
-    id: "6",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-  {
-    id: "7",
-    title: "Test Room",
-    description: "Test Room Description",
-    imageSrc: `${house.src}`,
-    createdAt: "",
-    category: "Test Category",
-    roomCount: "2",
-    bathroomCount: "3",
-    guestCount: "3",
-    locationValue: "",
-    userId: "Test User Id",
-    price: "80000",
-  },
-];
+import { getListingsByCategory } from "@/utils/getListingsByCategory";
 
 interface ISearchParams {
   category: string;
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
-  //TODO 這邊要拿searchParams.category去切換頁面
+  let listings;
+  if (searchParams.category) {
+    listings = await getListingsByCategory();
+  } else {
+    listings = await getAllListings();
+  }
+
   return (
     <Container>
       <div
@@ -124,11 +31,7 @@ const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
           "
       >
         {listings.map((listing: any) => (
-          <ListingCard
-            currentUser={{ name: "kenny" }}
-            key={listing.id}
-            data={listing}
-          />
+          <ListingCard key={listing.id} listData={listing} />
         ))}
       </div>
     </Container>

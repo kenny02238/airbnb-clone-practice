@@ -49,7 +49,7 @@ const RegisterModal = () => {
         },
       });
 
-      const response = await responseHandler(res);
+      await responseHandler(res);
       toast.success(`🦄成功註冊🦄`, {
         position: "top-center",
         autoClose: 5000,
@@ -60,6 +60,7 @@ const RegisterModal = () => {
         progress: undefined,
         theme: "colored",
       });
+      registerModalClose();
     } catch (err) {
       toast.error(`🦄${err}🦄`, {
         position: "top-center",

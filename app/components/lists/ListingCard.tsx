@@ -1,21 +1,22 @@
 "use client";
 
-import { SafeUser, SafeListing } from "@/app/types";
+import { SafeListing } from "@/app/types";
 import HeartButton from "./HeartButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface ListingCardProps {
-  currentUser?: SafeUser;
-  data: SafeListing;
+  listData: SafeListing;
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
+const ListingCard: React.FC<ListingCardProps> = ({ listData }) => {
   const router = useRouter();
+  const { data } = useSession();
   return (
     <div>
       <div
-        onClick={() => router.push(`/listings/${data.id}`)}
+        onClick={() => router.push(`/listings/${listData.id}`)}
         className="col-span-1 cursor-pointer group"
       >
         <div className="flex flex-col gap-2 w-full">
@@ -38,7 +39,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
               group-hover:scale-110 
               transition
             "
-              src={data.imageSrc}
+              src={listData.imageSrc}
               alt="Listing"
               priority
             />
@@ -49,18 +50,18 @@ const ListingCard: React.FC<ListingCardProps> = ({ currentUser, data }) => {
             right-3
           "
             >
-              <HeartButton listingId={data.id} currentUser={currentUser} />
+              <HeartButton listingId={listData.id} currentUser={data?.user} />
             </div>
           </div>
           <div className="font-semibold text-lg">
             {/* {location?.region}, {location?.label} */}
           </div>
           <div className="font-light text-neutral-500">
-            {data.category}
-            {/* {reservationDate || data.category} */}
+            {listData.category}
+            {/* {reservationDate || listData.category} */}
           </div>
           <div className="flex flex-row items-center gap-1">
-            <div className="font-semibold">$ {data.price}</div>
+            <div className="font-semibold">$ {listData.price}</div>
             {/* {!reservation && (
               )} */}
             <div className="font-light">night</div>

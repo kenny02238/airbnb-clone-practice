@@ -1,15 +1,11 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hook";
 import { useCallback, useMemo, useState } from "react";
-import {
-  SubmitHandler,
-  useForm,
-  FieldValues,
-  useFieldArray,
-} from "react-hook-form";
+import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 import { onCloseUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
 import Modal from "./Modal";
 import BodyContent from "./uploadToAirBnbBodyContent/BodyContent";
+import { BsClockFill } from "react-icons/bs";
 
 enum STEPS {
   CATEGORY,
@@ -25,6 +21,10 @@ const UploadToAirbnbModal = () => {
 
   const isUploadModalOpen = useAppSelector(
     (state) => state.isUploadToAirbnbModalOpenSlice.isOpen
+  );
+
+  const { user, authToken } = useAppSelector(
+    (state) => state.userSessionSlice.userData
   );
   const dispatch = useAppDispatch();
 
@@ -95,14 +95,20 @@ const UploadToAirbnbModal = () => {
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, key === "location" ? value.value : value);
       });
-      const postData = await fetch("http://192.168.68.120:8000/listings/", {
+      console.log(`Bearer ${!authToken ? user?.access : authToken}`);
+      console.log("formData", formData);
+      //${process.env.API_URL}
+      const res = await fetch(`${process.env.API_URL}/listings/`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzOTk4Mjc2LCJpYXQiOjE2OTM5OTc5NzYsImp0aSI6IjI2MGIzYzAwMzhlODQ4Y2Y5Y2FkNjgwZTJhYzExNTY5IiwidXNlcl9pZCI6Mn0.Y-BV1m0aOuj0qSkPQ-bPbd4IzyYuVvcEtGyD77G4WZA`,
+          Authorization: `Bearer ${!authToken ? user?.access : authToken}`,
+          "Content-Type":
+            "multipart/form-data; boundary=<calculated when request is sent>",
         },
         body: formData,
       });
-      const response = await postData.json();
+      const response = await res.json();
+      console.log("response", response, res);
     } catch (err) {
       console.log(err);
     }

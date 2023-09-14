@@ -49,16 +49,14 @@ const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }) {
-      // console.log("sessionUser", token);
       session.user = token.user;
       return session;
     },
     async jwt({ user, token, account }) {
-      // console.log("Jwt", user, token, account);
-
       if (account?.type === "credentials") {
         token.accessToken = user.access;
         token.user = user.user;
+        return token;
       }
       if (account?.provider === "google") {
         try {
