@@ -4,15 +4,19 @@ import { SafeListing } from "@/app/types";
 import HeartButton from "./HeartButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { SafeReservation, SafeUser } from "@/app/types";
 
 interface ListingCardProps {
   listData: SafeListing;
+  reservation?: SafeReservation;
+  actionId?: string;
+  onAction?: (id: string) => void;
+  actionLabel?: string;
+  currentUser?: SafeUser | null;
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({ listData }) => {
+const ListingCard: React.FC<ListingCardProps> = ({ listData, reservation }) => {
   const router = useRouter();
-  const { data } = useSession();
   return (
     <div>
       <div
@@ -31,26 +35,20 @@ const ListingCard: React.FC<ListingCardProps> = ({ listData }) => {
           >
             <Image
               fill
-              sizes="100vw"
               className="
               object-cover 
-              h-full 
-              w-full 
               group-hover:scale-110 
               transition
+              h-full
+              w-full
             "
               src={listData.imageSrc}
               alt="Listing"
               priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-            <div
-              className="
-            absolute
-            top-3
-            right-3
-          "
-            >
-              <HeartButton listingId={listData.id} currentUser={data?.user} />
+            <div className="absolute top-3 right-3">
+              <HeartButton listingId={listData.id} />
             </div>
           </div>
           <div className="font-semibold text-lg">

@@ -7,10 +7,11 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
-import { Slide, ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { onClose } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 import { onOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
+import { onTransition } from "@/app/redux/features/forModalOpenTransition/forModalOpenTransition";
 
 import Modal from "./Modal";
 import Input from "../inputs/Input";
@@ -56,8 +57,7 @@ const LoginModal = () => {
           pending: "Promise is pending",
         }
       );
-
-      loginModalClose();
+      dispatch(onTransition(false));
     } catch (err) {
       toast.error(`🦄 ${err}`, {
         position: "top-center",

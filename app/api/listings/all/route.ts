@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 import { getToken } from "next-auth/jwt";
 
 const secret = process.env.NEXTAUTH_SECRET;
@@ -15,15 +14,12 @@ export async function GET() {
 export async function POST(req: any) {
   const token = await getToken({ req, secret });
   const body = await req.formData();
-  console.log(body instanceof FormData, body);
 
   try {
     const response = await fetch(`${process.env.API_URL}listings/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token?.accessToken}`,
-        "Content-Type":
-          "multipart/form-data; boundary=<calculated when request is sent>",
       },
       body,
     });

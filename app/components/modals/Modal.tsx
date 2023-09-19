@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button from "../Button";
+import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
+import { onTransition } from "@/app/redux/features/forModalOpenTransition/forModalOpenTransition";
 
 interface ModalProps {
   isOpen?: boolean;
@@ -29,9 +31,22 @@ const Modal: React.FC<ModalProps> = ({
   secondaryActionLabel,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
+  const forTransition = useAppSelector(
+    (state) => state.forModalOpenTransition.isOpenForTransition
+  );
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    setShowModal(isOpen);
-  }, [isOpen]);
+    if (!forTransition) {
+      setShowModal(false);
+      setTimeout(() => {
+        onClose();
+        dispatch(onTransition(true));
+      }, 300);
+    } else {
+      setShowModal(isOpen);
+    }
+  }, [isOpen, forTransition, onClose, dispatch]);
 
   const handleClose = useCallback(() => {
     if (disabled) {
@@ -56,9 +71,15 @@ const Modal: React.FC<ModalProps> = ({
     if (disabled || !secondaryAction) {
       return;
     }
-
-    secondaryAction();
-  }, [secondaryAction, disabled]);
+    if (secondaryActionLabel === "Cancel") {
+      setShowModal(false);
+      setTimeout(() => {
+        secondaryAction();
+      }, 300);
+    } else {
+      secondaryAction();
+    }
+  }, [secondaryAction, disabled, secondaryActionLabel]);
 
   if (!isOpen) {
     return null;
@@ -66,7 +87,7 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <>
       <div
-        className="
+        className={`
           justify-center 
           items-center 
           flex 
@@ -78,7 +99,10 @@ const Modal: React.FC<ModalProps> = ({
           outline-none 
           focus:outline-none
           bg-neutral-800/70
-        "
+          ${showModal ? "opacity-100" : "opacity-0"}
+          transition 
+          duration-300
+        `}
       >
         <div
           className="
@@ -97,7 +121,7 @@ const Modal: React.FC<ModalProps> = ({
           {/*content*/}
           <div
             className={`
-            translate
+            transition
             duration-300
             h-full
             ${showModal ? "translate-y-0" : "translate-y-full"}

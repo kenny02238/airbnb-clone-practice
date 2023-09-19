@@ -2,7 +2,7 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -39,25 +39,29 @@ const authOptions: AuthOptions = {
       },
     }),
   ],
-  pages: {
-    signIn: "/",
-  },
+
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token }) {
-      session.user = token.user;
+    async session({ session, token, user }) {
+      console.log("---------session", session, token, user);
+      session.accessToken = token.accessToken;
+      session.customUser = token.customUser;
       return session;
     },
     async jwt({ user, token, account }) {
+      console.log("account", account);
+      console.log("---------jwt");
+
       if (account?.type === "credentials") {
         token.accessToken = user.access;
-        token.user = user.user;
+        token.customUser = user.user;
         return token;
       }
+
       if (account?.provider === "google") {
         try {
           const login = await fetch(
@@ -72,10 +76,12 @@ const authOptions: AuthOptions = {
               }),
             }
           );
+
           const user = await login.json();
+          token.user = user.user;
           token.accessToken = user.access;
         } catch (err) {
-          console.log(err);
+          console.log("socialErr", err);
         }
       }
       return token;

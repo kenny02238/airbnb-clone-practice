@@ -3,22 +3,21 @@ import { useState, useCallback } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
 import MenuItem from "./MenuItem";
-import { useAppDispatch } from "@/app/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hook";
 import { onOpen as onRegisterOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 import { onOpen as onLoginOpen } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 import { onOpenUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
-import { useSession } from "next-auth/react";
 import { SafeUser } from "@/app/types";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 interface UserMenu {
   currentUser?: SafeUser | null;
 }
 
 const UserMenu: React.FC<UserMenu> = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data } = useSession();
-  console.log("Session data", data);
-
+  const router = useRouter();
+  const user = useAppSelector((state) => state.userSessionSlice.userData.user);
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
@@ -27,7 +26,7 @@ const UserMenu: React.FC<UserMenu> = () => {
     dispatch(onRegisterOpen());
   }, [dispatch]);
   const loginModalOpen = useCallback(() => {
-    return dispatch(onLoginOpen());
+    dispatch(onLoginOpen());
   }, [dispatch]);
   const uploadModalOpen = useCallback(
     () => dispatch(onOpenUpload()),
@@ -37,7 +36,7 @@ const UserMenu: React.FC<UserMenu> = () => {
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
-          onClick={data?.user ? uploadModalOpen : loginModalOpen}
+          onClick={user ? uploadModalOpen : loginModalOpen}
           className=" hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
         >
           Airbnb your home
@@ -48,24 +47,36 @@ const UserMenu: React.FC<UserMenu> = () => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar image={data?.user?.image ? data?.user?.image : null} />
+            <Avatar image={user?.image ? user?.image : null} />
           </div>
         </div>
       </div>
       {isOpen && (
         <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
-            {!data?.user ? (
+            {!user ? (
               <>
                 <MenuItem onClick={loginModalOpen} label="Login" />
                 <MenuItem onClick={registerModalOpen} label="SignUp" />
               </>
             ) : (
               <>
-                <MenuItem label="My trips" onClick={() => {}} />
-                <MenuItem label="My favorites" onClick={() => {}} />
-                <MenuItem label="My reservations" onClick={() => {}} />
-                <MenuItem label="My properties" onClick={() => {}} />
+                <MenuItem
+                  label="My trips"
+                  onClick={() => router.push("/trips")}
+                />
+                <MenuItem
+                  label="My favorites"
+                  onClick={() => router.push("/favorites")}
+                />
+                <MenuItem
+                  label="My reservations"
+                  onClick={() => router.push("/reservations")}
+                />
+                <MenuItem
+                  label="My properties"
+                  onClick={() => router.push("/properties")}
+                />
                 <MenuItem label="Airbnb your home" onClick={uploadModalOpen} />
                 <hr />
                 <MenuItem label="Logout" onClick={() => signOut()} />

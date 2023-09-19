@@ -1,26 +1,33 @@
 import EmptyState from "@/app/components/EmptyState";
 import ListingClient from "./ListingClient";
 import { SafeListing } from "@/app/types";
-
+import { responseHandler } from "@/utils/responseHandler";
 interface IParams {
-  category: string;
+  listingId: string;
 }
 
-const ListingPage = async ({ params: { category } }: { params: IParams }) => {
-  const list: SafeListing[] | null = null;
-  // if (!list) {
-  //   return (
-  //     <>
-  //       <EmptyState showReset={true} />
-  //     </>
-  //   );
-  // }
+const ListingPage = async ({ params }: { params: IParams }) => {
+  try {
+    const result = await fetch(
+      `${process.env.API_URL}listings/${params.listingId}/`
+    );
+    const list: SafeListing[] | null = await responseHandler(result);
 
-  return (
-    <div className="pt-[200px]">
-      <ListingClient listings={list} />
-    </div>
-  );
+    if (!list) {
+      return (
+        <>
+          <EmptyState showReset={true} />
+        </>
+      );
+    }
+    return (
+      <div className="pt-[200px]">
+        <ListingClient listings={list} />
+      </div>
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default ListingPage;

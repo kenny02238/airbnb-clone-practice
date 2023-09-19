@@ -1,20 +1,27 @@
 import { getAllListings } from "@/utils/getListings";
 import Container from "./components/Container";
 import ListingCard from "./components/lists/ListingCard";
-import house from "@/public/images/house.jpg";
 import { getListingsByCategory } from "@/utils/getListingsByCategory";
+import EmptyState from "@/app/components/EmptyState";
 
 interface ISearchParams {
   category: string;
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
   let listings;
+
   if (searchParams.category) {
-    listings = await getListingsByCategory();
+    listings = await getListingsByCategory(searchParams.category);
   } else {
     listings = await getAllListings();
   }
-
+  if (listings.length === 0) {
+    return (
+      <div>
+        <EmptyState showReset />
+      </div>
+    );
+  }
   return (
     <Container>
       <div

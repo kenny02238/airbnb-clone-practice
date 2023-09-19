@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { categories } from "../../navbar/Categories";
 import CategoryInput from "../../inputs/CategoryInput";
 import CountrySelect from "../../inputs/CountrySelect";
@@ -61,7 +61,7 @@ const BodyContent: React.FC<BodyContentProps> = ({
       }),
     [location]
   );
-
+  const [img, setImg] = useState<string>("");
   if (step === STEPS.LOCATION) {
     return (
       <div className="flex flex-col gap-8">
@@ -113,7 +113,12 @@ const BodyContent: React.FC<BodyContentProps> = ({
           title="Add a photo of your place"
           subtitle="Show guests what your place looks like!"
         />
-        <ImageUpload onChange={setValue} value={image} />
+        <ImageUpload
+          onChange={setValue}
+          value={image}
+          setImg={setImg}
+          img={img}
+        />
       </div>
     );
   }

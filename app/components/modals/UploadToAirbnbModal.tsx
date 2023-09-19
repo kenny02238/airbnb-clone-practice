@@ -84,8 +84,6 @@ const UploadToAirbnbModal = () => {
     return "Back";
   }, [step]);
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log("data", data);
-
     if (step !== STEPS.PRICE) {
       return onNext();
     }
@@ -93,22 +91,22 @@ const UploadToAirbnbModal = () => {
       const formData = new FormData();
 
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, key === "location" ? value.value : value);
+        formData.append(
+          key === "location" ? "locationValue" : key,
+          key === "location" ? value.value : value
+        );
       });
-      console.log(`Bearer ${!authToken ? user?.access : authToken}`);
-      console.log("formData", formData);
-      //${process.env.API_URL}
-      const res = await fetch(`${process.env.API_URL}/listings/`, {
+      const res = await fetch(`/api/listings/all`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${!authToken ? user?.access : authToken}`,
-          "Content-Type":
-            "multipart/form-data; boundary=<calculated when request is sent>",
         },
         body: formData,
       });
+      console.log("res", res);
+
       const response = await res.json();
-      console.log("response", response, res);
+      console.log("response", response);
     } catch (err) {
       console.log(err);
     }

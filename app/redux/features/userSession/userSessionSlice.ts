@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PayloadAction } from "@reduxjs/toolkit";
 import { UserData, AuthDefaultUserData } from "@/app/types";
 
 interface UserSessionState {
   userData: {
-    user: (UserData & AuthDefaultUserData) | undefined;
+    user: UserData | undefined;
     expires: string;
     authToken: string;
   };

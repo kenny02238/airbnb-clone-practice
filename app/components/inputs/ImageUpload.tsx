@@ -5,15 +5,19 @@ import { useState } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
 import { UseFormSetValue } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
 interface ImageUploadProps {
   onChange: UseFormSetValue<FieldValues>;
   value: string;
+  setImg: Dispatch<SetStateAction<string>>;
+  img: string;
 }
-const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
-  const [img, setImg] = useState<string>(
-    "blob:http://localhost:3000/58fea745-f110-4f23-8e25-54c1b60c83f7"
-  );
-
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  onChange,
+  value,
+  setImg,
+  img,
+}) => {
   const handlePicUpLoad = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -22,6 +26,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
       onChange("image", file);
     }
   };
+
   return (
     <div>
       <label
@@ -47,9 +52,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
         {img && (
           <div
             className="
-              absolute inset-0 w-full h-full"
+              absolute inset-0 w-full h-full object-cover"
           >
-            <Image fill style={{ objectFit: "cover" }} src={img} alt="House" />
+            <Image
+              fill
+              src={img}
+              alt="upLoadImg"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
           </div>
         )}
         <input

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { useAppDispatch } from "../redux/hook";
 import {
   setToken,
   setUser,
@@ -13,15 +13,23 @@ interface ContainerProps {
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
   const { data } = useSession();
+  console.log("----------------", data);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getToken = async () => {
-      const res = await fetch("/api/user/getToken");
-      const response = await res.json();
-      dispatch(setToken(response));
+      try {
+        const res = await fetch("/api/user/getToken");
+
+        const response = await res.json();
+        dispatch(setToken(response));
+        dispatch(setUser(data?.customUser));
+      } catch (err) {
+        console.log(err);
+      }
     };
+
     getToken();
-    dispatch(setUser(data?.user));
   }, [data, dispatch]);
   return (
     <div

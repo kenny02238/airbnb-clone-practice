@@ -36,6 +36,7 @@ export type SafeListing = {
   userId: string;
   price: number;
 };
+
 export type SafeReservation = {
   id: string;
   userId: string;
