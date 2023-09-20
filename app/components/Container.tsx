@@ -7,20 +7,23 @@ import {
   setUser,
 } from "../redux/features/userSession/userSessionSlice";
 import { useSession } from "next-auth/react";
+import { responseHandler } from "@/utils/responseHandler";
+import { SafeReservation } from "../types";
+import { setFavoriteList } from "../redux/features/userSession/userSessionSlice";
 interface ContainerProps {
   children: React.ReactNode;
 }
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
   const { data } = useSession();
-  console.log("----------------", data);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
+    console.log(111);
+
     const getToken = async () => {
       try {
         const res = await fetch("/api/user/getToken");
-
         const response = await res.json();
         dispatch(setToken(response));
         dispatch(setUser(data?.customUser));
@@ -28,9 +31,21 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
         console.log(err);
       }
     };
-
     getToken();
   }, [data, dispatch]);
+
+  // useEffect(() => {
+  //   const fetchFavorite = async () => {
+  //     const res = await fetch("/api/user/favorite");
+
+  //     const response = await responseHandler(res);
+  //     if (response) {
+  //       const ids = response.map((item: SafeReservation) => item.id);
+  //       dispatch(setFavoriteList(ids));
+  //     }
+  //   };
+  //   fetchFavorite();
+  // }, [dispatch]);
   return (
     <div
       className="

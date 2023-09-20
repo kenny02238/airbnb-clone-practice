@@ -7,6 +7,7 @@ interface UserSessionState {
     expires: string;
     authToken: string;
   };
+  userFavoriteList?: number[];
 }
 
 const initialState: UserSessionState = {
@@ -35,8 +36,25 @@ const userSessionSlice = createSlice({
     setToken(state, action) {
       state.userData.authToken = action.payload;
     },
+    setWholeFavList(state, action) {
+      state.userFavoriteList = action.payload;
+    },
+    setFavoriteList(state, action: { type: string; payload: number }) {
+      state.userFavoriteList?.push(action.payload);
+    },
+    deleteFavoriteList(state, action: { type: string; payload: number }) {
+      state.userFavoriteList = state.userFavoriteList?.filter(
+        (item) => item !== action.payload
+      );
+    },
   },
 });
 
-export const { setUser, setToken } = userSessionSlice.actions;
+export const {
+  setUser,
+  setToken,
+  setFavoriteList,
+  setWholeFavList,
+  deleteFavoriteList,
+} = userSessionSlice.actions;
 export default userSessionSlice.reducer;

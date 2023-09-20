@@ -5,6 +5,9 @@ import HeartButton from "./HeartButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SafeReservation, SafeUser } from "@/app/types";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/app/redux/hook";
+import { setWholeFavList } from "@/app/redux/features/userSession/userSessionSlice";
 
 interface ListingCardProps {
   listData: SafeListing;
@@ -13,10 +16,21 @@ interface ListingCardProps {
   onAction?: (id: string) => void;
   actionLabel?: string;
   currentUser?: SafeUser | null;
+  favList?: number[];
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({ listData, reservation }) => {
+const ListingCard: React.FC<ListingCardProps> = ({
+  listData,
+  reservation,
+  favList,
+}) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (favList) {
+      dispatch(setWholeFavList(favList));
+    }
+  }, [dispatch, favList]);
   return (
     <div>
       <div

@@ -23,7 +23,7 @@ export interface GoogleUserData {
   image?: string | null | undefined;
 }
 export type SafeListing = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   imageSrc: string;
@@ -38,7 +38,7 @@ export type SafeListing = {
 };
 
 export type SafeReservation = {
-  id: string;
+  id: number;
   userId: string;
   listingId: string;
   startDate: Date;

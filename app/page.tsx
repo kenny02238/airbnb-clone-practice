@@ -3,6 +3,11 @@ import Container from "./components/Container";
 import ListingCard from "./components/lists/ListingCard";
 import { getListingsByCategory } from "@/utils/getListingsByCategory";
 import EmptyState from "@/app/components/EmptyState";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { responseHandler } from "@/utils/responseHandler";
+import { SafeReservation } from "@/app/types";
+
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -32,6 +37,8 @@ interface ISearchParams {
   category: string;
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
+  const session = await getServerSession(authOptions);
+
   let listings;
 
   if (searchParams.category) {
@@ -39,6 +46,15 @@ const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
   } else {
     listings = await getAllListings();
   }
+  const favList = await fetch(`${process.env.API_URL}users/favorites/`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+    cache: "no-cache",
+  });
+  const favListRes = await responseHandler(favList);
+  const ids = favListRes && favListRes.map((item: SafeReservation) => item.id);
   if (listings.length === 0) {
     return (
       <div>
@@ -62,7 +78,7 @@ const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
           "
       >
         {listings.map((listing: any) => (
-          <ListingCard key={listing.id} listData={listing} />
+          <ListingCard key={listing.id} listData={listing} favList={ids} />
         ))}
       </div>
     </Container>

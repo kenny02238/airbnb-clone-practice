@@ -5,11 +5,6 @@ import { SafeListing, SafeReservation } from "@/app/types";
 import Heading from "../components/Heading";
 import ListingCard from "../components/lists/ListingCard";
 const currentUser = null;
-const initialDateRange = {
-  startDate: new Date(),
-  endDate: new Date(),
-  key: "selection",
-};
 
 interface PropertiesClientProps {
   listings?: SafeListing[] | null | any;

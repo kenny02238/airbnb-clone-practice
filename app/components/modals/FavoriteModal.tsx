@@ -12,6 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { onClose } from "@/app/redux/features/isWishListOpen/isWishListOpenSlice";
 import { onOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 import { onTransition } from "@/app/redux/features/forModalOpenTransition/forModalOpenTransition";
+import {
+  setFavoriteList,
+  deleteFavoriteList,
+} from "@/app/redux/features/userSession/userSessionSlice";
 
 import Modal from "./Modal";
 import Heading from "../Heading";
@@ -50,11 +54,10 @@ const FavoriteModal = () => {
         }
       );
       const response = await res.json();
-      console.log("response", response);
 
       toast.success(`🦄 ${response.message}`, {
         position: "top-center",
-        autoClose: 10000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -62,14 +65,19 @@ const FavoriteModal = () => {
         progress: undefined,
         theme: "colored",
       });
-
+      if (res.status === 201) {
+        dispatch(setFavoriteList(listingId!));
+      }
+      if (res.status === 202) {
+        dispatch(deleteFavoriteList(listingId!));
+      }
       dispatch(onTransition(false));
     } catch (err) {
       console.log("err", err);
 
       toast.error(`🦄 ${err}`, {
         position: "top-center",
-        autoClose: 10000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

@@ -6,9 +6,12 @@ import ListingInfo from "@/app/components/lists/ListingInfo";
 import ListingReservation from "@/app/components/lists/ListingReservation";
 import { Range } from "react-date-range";
 import { SafeListing, SafeReservation } from "@/app/types";
-import { differenceInDays, eachDayOfInterval } from "date-fns";
+import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import { useMemo, useState, useEffect, useCallback } from "react";
-
+import { toast, ToastContainer, Slide } from "react-toastify";
+import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
+import { responseHandler } from "@/utils/responseHandler";
+import { setWholeFavList } from "@/app/redux/features/userSession/userSessionSlice";
 const currentUser = null;
 const initialDateRange = {
   startDate: new Date(),
@@ -19,16 +22,24 @@ const initialDateRange = {
 interface ListingClientProps {
   listings: SafeListing[] | null | any;
   reservations?: SafeReservation[];
+  favList?: number[];
 }
 
 const ListingClient: React.FC<ListingClientProps> = ({
   listings,
   reservations = [],
+  favList,
 }) => {
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const [totalPrice, setTotalPrice] = useState(listings.price);
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector(
+    (state) => state.userSessionSlice.userData.user?.id
+  );
+  useEffect(() => {
+    dispatch(setWholeFavList(favList));
+  }, [dispatch, favList]);
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
@@ -42,11 +53,53 @@ const ListingClient: React.FC<ListingClientProps> = ({
     });
     return dates;
   }, [reservations]);
-  const onCreateReservation = useCallback(() => {
+
+  const onCreateReservation = useCallback(async () => {
     setIsLoading(true);
+    try {
+      const res = await toast.promise(
+        fetch("/api/reservations/", {
+          method: "POST",
+          body: JSON.stringify({
+            startDate: format(dateRange.startDate!, "yyyy-MM-dd"),
+            endDate: format(dateRange.endDate!, "yyyy-MM-dd"),
+            listingId: listings.id,
+            totalPrice,
+          }),
+        }),
+        {
+          pending: " Booking in progress... ⌛📅 ",
+        }
+      );
+      const response = await responseHandler(res);
+
+      toast.success(`"Booking Confirmed! 🎉✅`, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setDateRange(initialDateRange);
+    } catch (error) {
+      toast.error(`🦄 ${error}`, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setDateRange(initialDateRange);
+    }
+
     setIsLoading(false);
-    console.log("dateRange", dateRange);
-  }, [dateRange]);
+  }, [dateRange, listings, totalPrice, userId]);
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
@@ -61,6 +114,19 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   return (
     <div>
+      <ToastContainer
+        position="top-center"
+        transition={Slide}
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Container>
         <div
           className="
