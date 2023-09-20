@@ -7,7 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
-import { toast } from "react-toastify";
+import { toast, ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { onClose } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 import { onOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
@@ -54,9 +54,19 @@ const LoginModal = () => {
           redirect: false,
         }),
         {
-          pending: "Promise is pending",
+          pending: "Logging in... 🚀🔐",
         }
       );
+      toast.success(`Logged in! 🎉🔐`, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       dispatch(onTransition(false));
     } catch (err) {
       toast.error(`🦄 ${err}`, {
@@ -141,16 +151,31 @@ const LoginModal = () => {
   );
 
   return (
-    <Modal
-      disabled={isLoading}
-      isOpen={modalIsOpen}
-      title="Login"
-      actionLabel="Continue"
-      onClose={loginModalClose}
-      onSubmit={handleSubmit(onSubmit)}
-      body={bodyContent}
-      footer={footerContent}
-    />
+    <>
+      <ToastContainer
+        position="top-center"
+        transition={Slide}
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <Modal
+        disabled={isLoading}
+        isOpen={modalIsOpen}
+        title="Login"
+        actionLabel="Continue"
+        onClose={loginModalClose}
+        onSubmit={handleSubmit(onSubmit)}
+        body={bodyContent}
+        footer={footerContent}
+      />
+    </>
   );
 };
 

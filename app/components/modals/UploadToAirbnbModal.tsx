@@ -5,7 +5,9 @@ import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 import { onCloseUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
 import Modal from "./Modal";
 import BodyContent from "./uploadToAirBnbBodyContent/BodyContent";
-import { BsClockFill } from "react-icons/bs";
+import { ToastContainer, Slide, toast } from "react-toastify";
+import { onTransition } from "@/app/redux/features/forModalOpenTransition/forModalOpenTransition";
+import "react-toastify/dist/ReactToastify.css";
 
 enum STEPS {
   CATEGORY,
@@ -18,7 +20,6 @@ enum STEPS {
 
 const UploadToAirbnbModal = () => {
   const [step, setStep] = useState(STEPS.CATEGORY);
-
   const isUploadModalOpen = useAppSelector(
     (state) => state.isUploadToAirbnbModalOpenSlice.isOpen
   );
@@ -34,12 +35,10 @@ const UploadToAirbnbModal = () => {
   );
   const {
     handleSubmit,
-    control,
     register,
     setValue,
     formState: { errors },
     watch,
-    reset,
   } = useForm<FieldValues>({
     defaultValues: {
       category: "",
@@ -96,19 +95,43 @@ const UploadToAirbnbModal = () => {
           key === "location" ? value.value : value
         );
       });
-      const res = await fetch(`/api/listings/all`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${!authToken ? user?.access : authToken}`,
-        },
-        body: formData,
-      });
-      console.log("res", res);
+      const res = await toast.promise(
+        fetch(`/api/listings/all`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${!authToken ? user?.access : authToken}`,
+          },
+          body: formData,
+        }),
+        {
+          pending: "uploading",
+        }
+      );
 
       const response = await res.json();
-      console.log("response", response);
+      toast.success(`Awesome! Upload success! 🎉`, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      dispatch(onTransition(false));
     } catch (err) {
-      console.log(err);
+      toast.error(`🦄${err}🦄`, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      dispatch(onTransition(false));
     }
   };
 
@@ -137,6 +160,19 @@ const UploadToAirbnbModal = () => {
           />
         }
         title="Airbnb your home"
+      />
+      <ToastContainer
+        position="top-center"
+        transition={Slide}
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
       />
     </>
   );
