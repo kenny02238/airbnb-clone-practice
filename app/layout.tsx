@@ -8,6 +8,7 @@ import { Providers } from "./redux/provider";
 import { Nunito } from "next/font/google";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+
 const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
