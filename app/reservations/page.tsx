@@ -19,7 +19,6 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     });
 
     const list: SafeReservation[] | null = await responseHandler(result);
-    console.log("rst", list);
 
     if (!list) {
       return (

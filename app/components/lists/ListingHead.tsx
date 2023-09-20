@@ -56,7 +56,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
             right-5
           "
         >
-          <HeartButton listingId={id} currentUser={currentUser} />
+          <HeartButton listingId={id} />
         </div>
       </div>
     </>
