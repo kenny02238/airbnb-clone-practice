@@ -46,16 +46,13 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token, user }) {
-      console.log("---------session", session, token, user);
-      session.accessToken = token.accessToken;
+    async session({ session, token }) {
       session.customUser = token.customUser;
+      session.accessToken = token.accessToken;
+
       return session;
     },
     async jwt({ user, token, account }) {
-      console.log("account", account);
-      console.log("---------jwt");
-
       if (account?.type === "credentials") {
         token.accessToken = user.access;
         token.customUser = user.user;
@@ -78,7 +75,7 @@ export const authOptions: AuthOptions = {
           );
 
           const user = await login.json();
-          token.user = user.user;
+          token.customUser = user.user;
           token.accessToken = user.access;
         } catch (err) {
           console.log("socialErr", err);

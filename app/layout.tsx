@@ -7,7 +7,7 @@ import "./globals.css";
 import { Providers } from "./redux/provider";
 import { Nunito } from "next/font/google";
 import { getServerSession } from "next-auth";
-
+import { authOptions } from "./api/auth/[...nextauth]/route";
 const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
@@ -20,7 +20,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en">

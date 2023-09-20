@@ -7,7 +7,6 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 interface IParams {
   listingId: string;
 }
-
 const ListingPage = async ({ params }: { params: IParams }) => {
   const session = await getServerSession(authOptions);
   try {
