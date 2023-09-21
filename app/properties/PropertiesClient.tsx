@@ -4,7 +4,6 @@ import Container from "@/app/components/Container";
 import { SafeListing, SafeReservation } from "@/app/types";
 import Heading from "../components/Heading";
 import ListingCard from "../components/lists/ListingCard";
-const currentUser = null;
 
 interface PropertiesClientProps {
   listings?: SafeListing[] | null | any;
@@ -38,8 +37,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
               reservation={reservation}
               actionId={reservation.id}
               onAction={() => {}}
-              actionLabel="Cancel reservation"
-              currentUser={currentUser}
+              actionLabel="Delete property"
             />
           ))}
         </div>

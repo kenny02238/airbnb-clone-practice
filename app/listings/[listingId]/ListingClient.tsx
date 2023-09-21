@@ -99,7 +99,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
     }
 
     setIsLoading(false);
-  }, [dateRange, listings, totalPrice, userId]);
+  }, [dateRange, listings, totalPrice]);
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
@@ -152,7 +152,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             "
             >
               <ListingInfo
-                user={{ name: "Kenny" }}
+                user={listings.ownerName}
                 category={listings.category}
                 description={listings.description}
                 roomCount={listings.roomCount}

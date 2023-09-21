@@ -24,7 +24,7 @@ const Map = dynamic(
 );
 
 interface ListingInfoProps {
-  user: SafeUser;
+  user: string;
   description: string;
   guestCount: number;
   roomCount: number;
@@ -65,7 +65,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             gap-2
           "
         >
-          <div>Hosted by {user?.name}</div>
+          <div>Hosted by {user}</div>
           {/* <Avatar src={user?.image} /> */}
         </div>
         <div

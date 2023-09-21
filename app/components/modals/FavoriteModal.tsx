@@ -50,14 +50,14 @@ const FavoriteModal = () => {
           }),
         }),
         {
-          pending: "Promise is pending",
+          pending: "loading....",
         }
       );
       const response = await res.json();
 
       toast.success(`🦄 ${response.message}`, {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -77,7 +77,7 @@ const FavoriteModal = () => {
 
       toast.error(`🦄 ${err}`, {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

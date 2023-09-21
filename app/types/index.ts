@@ -35,6 +35,7 @@ export type SafeListing = {
   locationValue: string;
   userId: string;
   price: number;
+  ownerName: string;
 };
 
 export type SafeReservation = {

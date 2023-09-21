@@ -39,7 +39,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
               reservation={reservation}
               actionId={reservation.id}
               onAction={() => {}}
-              actionLabel="Cancel reservation"
+              actionLabel="Cancel guest reservation"
               currentUser={currentUser}
             />
           ))}

@@ -38,23 +38,34 @@ interface ISearchParams {
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
   const session = await getServerSession(authOptions);
+  console.log("session", session);
 
-  let listings;
+  const listings = searchParams.category
+    ? await getListingsByCategory(searchParams.category)
+    : await getAllListings();
+  const ids = session
+    ? (
+        await responseHandler(
+          await fetch(`${process.env.API_URL}users/favorites/`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${session.accessToken}`,
+            },
+            cache: "no-cache",
+          })
+        )
+      )?.map((item: SafeReservation) => item.id)
+    : null;
 
-  if (searchParams.category) {
-    listings = await getListingsByCategory(searchParams.category);
-  } else {
-    listings = await getAllListings();
-  }
-  const favList = await fetch(`${process.env.API_URL}users/favorites/`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
-    },
-    cache: "no-cache",
-  });
-  const favListRes = await responseHandler(favList);
-  const ids = favListRes && favListRes.map((item: SafeReservation) => item.id);
+  // const favList = await fetch(`${process.env.API_URL}users/favorites/`, {
+  //   method: "GET",
+  //   headers: {
+  //     Authorization: `Bearer ${session?.accessToken}`,
+  //   },
+  //   cache: "no-cache",
+  // });
+  // const favListRes = await responseHandler(favList);
+  // const ids = favListRes && favListRes.map((item: SafeReservation) => item.id);
   if (listings.length === 0) {
     return (
       <div>
