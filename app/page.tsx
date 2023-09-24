@@ -12,18 +12,18 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   openGraph: {
-    title: "Next.js",
-    description: "The React Framework for the Web",
-    url: "https://nextjs.org",
+    title: "KD_AirBnb",
+    description: "Next.js for the Web",
+    url: "https://pethelp-api.store/",
     siteName: "Next.js",
     images: [
       {
-        url: "https://nextjs.org/og.png",
+        url: "https://i.pinimg.com/564x/c4/06/28/c406280d81f7e0e32f6b5f3af36d4282.jpg",
         width: 800,
         height: 600,
       },
       {
-        url: "https://nextjs.org/og-alt.png",
+        url: "https://i.pinimg.com/564x/c4/06/28/c406280d81f7e0e32f6b5f3af36d4282.jpg",
         width: 1800,
         height: 1600,
         alt: "My custom alt",
@@ -38,7 +38,6 @@ interface ISearchParams {
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
   const session = await getServerSession(authOptions);
-  console.log("session", session);
 
   const listings = searchParams.category
     ? await getListingsByCategory(searchParams.category)

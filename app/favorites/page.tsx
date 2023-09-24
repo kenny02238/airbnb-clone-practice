@@ -17,6 +17,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       headers: {
         Authorization: `Bearer ${session?.accessToken}`,
       },
+      cache: "no-cache",
     });
 
     const list: SafeReservation[] | null = await responseHandler(result);
@@ -30,7 +31,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     }
     return (
       <div className="pt-[200px]">
-        <FavoritesClient reservations={list} />
+        <FavoritesClient listings={list} />
       </div>
     );
   } catch (error) {

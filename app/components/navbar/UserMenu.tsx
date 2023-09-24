@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
 import MenuItem from "./MenuItem";
@@ -16,6 +16,7 @@ interface UserMenu {
 
 const UserMenu: React.FC<UserMenu> = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const user = useAppSelector((state) => state.userSessionSlice.userData.user);
   const toggleOpen = useCallback(() => {
@@ -32,8 +33,25 @@ const UserMenu: React.FC<UserMenu> = () => {
     () => dispatch(onOpenUpload()),
     [dispatch]
   );
+  //若UserMenu失去焦點則關閉Effect
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
   return (
-    <div className="relative">
+    <div className="relative" ref={userMenuRef}>
       <div className="flex flex-row items-center gap-3">
         <div
           onClick={user ? uploadModalOpen : loginModalOpen}
@@ -79,7 +97,14 @@ const UserMenu: React.FC<UserMenu> = () => {
                 />
                 <MenuItem label="Airbnb your home" onClick={uploadModalOpen} />
                 <hr />
-                <MenuItem label="Logout" onClick={() => signOut()} />
+                <MenuItem
+                  label="Logout"
+                  onClick={() =>
+                    signOut({ redirect: false }).then(() => {
+                      router.push("/");
+                    })
+                  }
+                />
               </>
             )}
           </div>

@@ -16,7 +16,7 @@ interface ListingCardProps {
   listData: SafeListing;
   reservation?: SafeReservation;
   actionId?: string;
-  onAction?: (id: string) => void;
+  onAction?: (e: React.MouseEvent<Element, MouseEvent>) => Promise<void>;
   actionLabel?: string;
   currentUser?: SafeUser | null;
   favList?: number[];
@@ -44,7 +44,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
     if (!reservation) {
       return null;
     }
-    console.log("reservation", reservation);
 
     const start = new Date("2022-09-23");
     const end = new Date("2023-10-17");
@@ -100,7 +99,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               disabled={disabled}
               small
               label={actionLabel}
-              onClick={() => {}}
+              onClick={onAction}
             />
           )}
         </div>

@@ -18,6 +18,7 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.13",
     "leaflet": "^1.9.4",
+    "lodash-es": "^4.17.21",
     "next": "13.4.13",
     "next-auth": "^4.23.1",
     "postcss": "8.4.27",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.4",
+    "@types/lodash-es": "^4.17.9",
     "@types/react-date-range": "^1.4.4"
   }
 }

@@ -1,16 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { signIn } from "next-auth/react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillGithub } from "react-icons/ai";
-import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { onClose } from "@/app/redux/features/isWishListOpen/isWishListOpenSlice";
-import { onOpen } from "@/app/redux/features/isRegisterModalOpen/isRegisterModalOpenSlice";
 import { onTransition } from "@/app/redux/features/forModalOpenTransition/forModalOpenTransition";
 import {
   setFavoriteList,
@@ -50,21 +45,13 @@ const FavoriteModal = () => {
           }),
         }),
         {
-          pending: "loading....",
+          pending: "Confirm property...",
+          success: "Well done!",
+          error: "Failed",
         }
       );
       const response = await res.json();
 
-      toast.success(`🦄 ${response.message}`, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
       if (res.status === 201) {
         dispatch(setFavoriteList(listingId!));
       }
@@ -74,17 +61,6 @@ const FavoriteModal = () => {
       dispatch(onTransition(false));
     } catch (err) {
       console.log("err", err);
-
-      toast.error(`🦄 ${err}`, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
       dispatch(onTransition(false));
     }
     setIsLoading(false);
@@ -92,7 +68,7 @@ const FavoriteModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Are you sure you want to add it to your wishlist?" />
+      <Heading title="Are you sure you want to proceed with this operation?" />
     </div>
   );
 

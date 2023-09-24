@@ -19,8 +19,6 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log(111);
-
     const getToken = async () => {
       try {
         const res = await fetch("/api/user/getToken");

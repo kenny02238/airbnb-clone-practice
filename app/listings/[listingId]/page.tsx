@@ -16,17 +16,21 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     const result = await fetch(
       `${process.env.API_URL}listings/${params.listingId}/`
     );
-    const favList = await fetch(`${process.env.API_URL}users/favorites/`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-      cache: "no-cache",
-    });
+    const ids = session
+      ? (
+          await responseHandler(
+            await fetch(`${process.env.API_URL}users/favorites/`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${session.accessToken}`,
+              },
+              cache: "no-cache",
+            })
+          )
+        )?.map((item: SafeReservation) => item.id)
+      : null;
     const list: SafeListing[] | null = await responseHandler(result);
-    const favListRes = await responseHandler(favList);
-    const ids =
-      favListRes && favListRes.map((item: SafeReservation) => item.id);
+
     if (!list) {
       return (
         <>
