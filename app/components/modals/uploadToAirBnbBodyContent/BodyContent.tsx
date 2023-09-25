@@ -69,7 +69,7 @@ const BodyContent: React.FC<BodyContentProps> = ({
           title="Where is your place located?"
           subtitle="Help guests find you!"
         />
-        <CountrySelect value={location} onChange={setValue} />
+        <CountrySelect value={location} formOnChange={setValue} />
         <Map center={location?.latlng} />
       </div>
     );

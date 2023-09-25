@@ -4,10 +4,8 @@ import dynamic from "next/dynamic";
 import { IconType } from "react-icons";
 
 import useCountries from "@/app/hooks/useCountries";
-import { SafeUser } from "@/app/types";
-import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
+import { TbBeach } from "react-icons/tb";
 
-import Avatar from "../Avatar";
 import ListingCategory from "./ListingCategory";
 
 const categories = {

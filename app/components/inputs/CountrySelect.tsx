@@ -3,8 +3,9 @@ import useCountries from "@/app/hooks/useCountries";
 import { UseFormSetValue } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
 import Select from "react-select";
+import { SetStateAction, Dispatch } from "react";
 
-interface CountrySelectValue {
+export interface CountrySelectValue {
   flag: string;
   label: string;
   latlng: number[];
@@ -14,11 +15,17 @@ interface CountrySelectValue {
 
 interface CountrySelectProps {
   value: CountrySelectValue;
-  onChange: UseFormSetValue<FieldValues>;
+  formOnChange?: UseFormSetValue<FieldValues>;
+  dispatchOnChange?: Dispatch<SetStateAction<CountrySelectValue>>;
 }
 
-const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
+const CountrySelect: React.FC<CountrySelectProps> = ({
+  value,
+  dispatchOnChange,
+  formOnChange,
+}) => {
   const { getAll } = useCountries();
+
   return (
     <>
       <div>
@@ -28,7 +35,9 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
           options={getAll()}
           value={value}
           onChange={(value) => {
-            onChange("location", value);
+            dispatchOnChange
+              ? dispatchOnChange(value)
+              : formOnChange && formOnChange("location", value);
           }}
           formatOptionLabel={(option: any) => (
             <div

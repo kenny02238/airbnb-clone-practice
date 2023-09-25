@@ -5,6 +5,7 @@ import isUploadToAirbnbModalOpenSlice from "../features/isUploadToAirbnbModalOpe
 import userSessionSlice from "../features/userSession/userSessionSlice";
 import forModalOpenTransition from "../features/forModalOpenTransition/forModalOpenTransition";
 import isWishListOpenSlice from "../features/isWishListOpen/isWishListOpenSlice";
+import isSearchModalOpenSlice from "../features/isSearchModalOpen/isSearchModalOpenSlice";
 const rootReducer = combineReducers({
   isRegisterModalOpenSlice,
   isLoginModalOpenSlice,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   forModalOpenTransition,
   userSessionSlice,
   isWishListOpenSlice,
+  isSearchModalOpenSlice,
 });
 
 export default rootReducer;

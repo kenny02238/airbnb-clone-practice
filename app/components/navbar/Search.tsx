@@ -1,9 +1,15 @@
 "use client";
 import { BiSearch } from "react-icons/bi";
+import { useAppDispatch } from "@/app/redux/hook";
+import { onOpenSearch } from "@/app/redux/features/isSearchModalOpen/isSearchModalOpenSlice";
 
 const Search = () => {
+  const dispatch = useAppDispatch();
   return (
-    <div className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer">
+    <div
+      className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer"
+      onClick={() => dispatch(onOpenSearch())}
+    >
       <div className="flex flex-row items-center justify-between">
         <div className="text-sm font-semibold px-6">AnyWhere</div>
         <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">

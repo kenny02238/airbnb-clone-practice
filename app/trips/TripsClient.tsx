@@ -4,6 +4,8 @@ import Container from "@/app/components/Container";
 import ListingCard from "../components/lists/ListingCard";
 import Heading from "../components/Heading";
 import { SafeListing, SafeReservation } from "@/app/types";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const currentUser = null;
 
@@ -13,6 +15,37 @@ interface TripsClientProps {
 }
 
 const TripsClient: React.FC<TripsClientProps> = ({ reservations = [] }) => {
+  const [liveProperties, setLiveProperties] = useState<SafeReservation[]>([]);
+  useEffect(() => {
+    setLiveProperties(reservations);
+  }, [reservations]);
+  const onDelete = useCallback(
+    async (e: React.MouseEvent<Element, MouseEvent>, listID: number) => {
+      e.stopPropagation();
+      try {
+        await toast.promise(
+          fetch("/api/reservations", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: listID,
+            }),
+          }),
+          {
+            pending: "Deleting property...",
+            success: "Property deleted!",
+            error: "Failed to delete property",
+          }
+        );
+        setLiveProperties((prev) => prev.filter((item) => item.id !== listID));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    []
+  );
   return (
     <div>
       <Container>
@@ -33,13 +66,15 @@ const TripsClient: React.FC<TripsClientProps> = ({ reservations = [] }) => {
           gap-8
         "
         >
-          {reservations.map((reservation: any) => (
+          {liveProperties.map((reservation: any) => (
             <ListingCard
               key={reservation.id}
               listData={reservation.listing}
               reservation={reservation}
               actionId={reservation.id}
-              onAction={() => {}}
+              onAction={(e: React.MouseEvent<Element, MouseEvent>) =>
+                onDelete(e, reservation.id)
+              }
               actionLabel="Cancel reservation"
               currentUser={currentUser}
             />

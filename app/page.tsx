@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { responseHandler } from "@/utils/responseHandler";
 import { SafeReservation } from "@/app/types";
+import { getSearchListings } from "@/utils/getSearchListings";
 
 import { Metadata } from "next";
 
@@ -34,13 +35,22 @@ export const metadata: Metadata = {
   },
 };
 interface ISearchParams {
-  category: string;
+  bathroomCount?: string;
+  endDate?: string;
+  guestCount?: string;
+  locationValue?: string;
+  roomCount?: string;
+  startDate?: string;
+  category?: string;
+  search: string;
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
   const session = await getServerSession(authOptions);
-
+  console.log("params", searchParams);
   const listings = searchParams.category
     ? await getListingsByCategory(searchParams.category)
+    : searchParams
+    ? await getSearchListings(searchParams)
     : await getAllListings();
   const ids = session
     ? (

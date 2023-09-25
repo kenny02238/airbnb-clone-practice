@@ -27,6 +27,8 @@ const ListingPage = async ({ params }: { params: IParams }) => {
         </>
       );
     }
+    console.log("list", list);
+
     return (
       <div className="pt-[200px]">
         <ReservationsClient reservations={list} />

@@ -1,7 +1,8 @@
 import LoginModal from "./components/modals/LoginModal";
 import RegisterModal from "./components/modals/RegisterModal";
-import UploadToAirbnbModal from "./components/modals/UploadToAirbnbModal";
+import UploadToAirbnbModal from "./components/modals/uploadToAirBnbBodyContent/UploadToAirbnbModal";
 import FavoriteModal from "./components/modals/FavoriteModal";
+import SearchModal from "./components/modals/SearchModal";
 import NavBar from "./components/navbar/NavBar";
 import "./globals.css";
 import { Providers } from "./redux/provider";
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <Providers session={session}>
           <RegisterModal />
           <LoginModal />
+          <SearchModal />
           <UploadToAirbnbModal />
           <FavoriteModal />
           <NavBar />

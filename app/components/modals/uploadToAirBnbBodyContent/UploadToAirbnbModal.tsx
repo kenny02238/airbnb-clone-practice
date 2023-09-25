@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from "@/app/redux/hook";
 import { useCallback, useMemo, useState } from "react";
 import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 import { onCloseUpload } from "@/app/redux/features/isUploadToAirbnbModalOpen/isUploadToAirbnbModalOpenSlice";
-import Modal from "./Modal";
-import BodyContent from "./uploadToAirBnbBodyContent/BodyContent";
+import Modal from "../Modal";
+import BodyContent from "./BodyContent";
 import { ToastContainer, Slide, toast } from "react-toastify";
 import { onTransition } from "@/app/redux/features/forModalOpenTransition/forModalOpenTransition";
 import "react-toastify/dist/ReactToastify.css";
@@ -95,7 +95,7 @@ const UploadToAirbnbModal = () => {
           key === "location" ? value.value : value
         );
       });
-      const res = await toast.promise(
+      const response = await toast.promise(
         fetch(`/api/listings/all`, {
           method: "POST",
           headers: {
@@ -104,33 +104,14 @@ const UploadToAirbnbModal = () => {
           body: formData,
         }),
         {
-          pending: "uploading",
+          pending: "uploading property...",
+          success: "Property uploaded!",
+          error: "Failed to upload property",
         }
       );
-
-      const response = await res.json();
-      toast.success(`Awesome! Upload success! 🎉`, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      // const response = await res.json();
       dispatch(onTransition(false));
     } catch (err) {
-      toast.error(`🦄${err}🦄`, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
       dispatch(onTransition(false));
     }
   };
