@@ -3194,10 +3194,10 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-world-countries@^4.0.0:
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/world-countries/-/world-countries-4.1.1.tgz"
-  integrity sha512-2Vw8aRLHIRggmvM5BQsBrTHq5J8AMByksbdqQuTpxOHEgWWNMJJKdKjI6jfSBROgyTJHGm1uwQTX9d9/QhhmDw==
+world-countries@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/world-countries/-/world-countries-5.0.0.tgz#6f75ebcce3d5224d84e9117eaf0d75a7726b6501"
+  integrity sha512-wAfOT9Y5i/xnxNOdKJKXdOCw9Q3yQLahBUeuRol+s+o20F6h2a4tLEbJ1lBCYwEQ30Sf9Meqeipk1gib3YwF5w==
 
 wrappy@1:
   version "1.0.2"
