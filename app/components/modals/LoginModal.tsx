@@ -55,18 +55,11 @@ const LoginModal = () => {
         }),
         {
           pending: "Logging in... 🚀🔐",
+          success: "Logged in! 🎉🔐",
+          error: "Failed to login 😢🔐",
         }
       );
-      toast.success(`Logged in! 🎉🔐`, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+
       dispatch(onTransition(false));
     } catch (err) {
       toast.error(`🦄 ${err}`, {

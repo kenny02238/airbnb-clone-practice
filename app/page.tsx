@@ -46,13 +46,12 @@ interface ISearchParams {
 }
 const Home = async ({ searchParams }: { searchParams: ISearchParams }) => {
   const session = await getServerSession(authOptions);
-  console.log("params", searchParams);
   const listings = searchParams.category
     ? await getListingsByCategory(searchParams.category)
     : searchParams
     ? await getSearchListings(searchParams)
     : await getAllListings();
-  const ids = session
+  const ids = session?.accessToken
     ? (
         await responseHandler(
           await fetch(`${process.env.API_URL}users/favorites/`, {

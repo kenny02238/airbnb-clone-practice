@@ -16,7 +16,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     const result = await fetch(
       `${process.env.API_URL}listings/${params.listingId}/`
     );
-    const ids = session
+    const ids = session?.accessToken
       ? (
           await responseHandler(
             await fetch(`${process.env.API_URL}users/favorites/`, {
@@ -30,7 +30,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
         )?.map((item: SafeReservation) => item.id)
       : null;
     const list: SafeListing[] | null = await responseHandler(result);
-
+    console.log(list);
     if (!list) {
       return (
         <>
@@ -44,7 +44,11 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       </div>
     );
   } catch (error) {
-    console.log(error);
+    return (
+      <>
+        <EmptyState title={`${error}`} subtitle="Please login" />
+      </>
+    );
   }
 };
 

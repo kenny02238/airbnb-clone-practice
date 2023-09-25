@@ -10,7 +10,11 @@ interface IParams {
 
 const ListingPage = async ({ params }: { params: IParams }) => {
   const session = await getServerSession(authOptions);
+  console.log("session", session);
+
   try {
+    console.log(1);
+
     const result = await fetch(`${process.env.API_URL}reservations/owner/`, {
       method: "GET",
       headers: {
@@ -27,7 +31,6 @@ const ListingPage = async ({ params }: { params: IParams }) => {
         </>
       );
     }
-    console.log("list", list);
 
     return (
       <div className="pt-[200px]">
@@ -35,7 +38,11 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       </div>
     );
   } catch (error) {
-    console.log(error);
+    return (
+      <>
+        <EmptyState title={`${error}`} subtitle="Please login" />
+      </>
+    );
   }
 };
 

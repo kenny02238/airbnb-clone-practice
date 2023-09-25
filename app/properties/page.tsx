@@ -33,7 +33,11 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       </div>
     );
   } catch (error) {
-    console.log(error);
+    return (
+      <>
+        <EmptyState title={`${error}`} subtitle="Please login" />
+      </>
+    );
   }
 };
 

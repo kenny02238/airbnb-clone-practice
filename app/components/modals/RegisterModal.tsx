@@ -41,25 +41,22 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/user/register", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await toast.promise(
+        fetch("/api/user/register", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+        {
+          pending: "🦄註冊中🦄",
+          success: "🦄成功註冊🦄",
+          error: "🦄註冊失敗🦄",
+        }
+      );
 
       await responseHandler(res);
-      toast.success(`🦄成功註冊🦄`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
       registerModalClose();
     } catch (err) {
       toast.error(`🦄${err}🦄`, {
