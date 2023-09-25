@@ -16,6 +16,9 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     const result = await fetch(
       `${process.env.API_URL}listings/${params.listingId}/`
     );
+    const reservationData = await fetch(
+      `${process.env.API_URL}listings/reservation/${params.listingId}`
+    );
     const ids = session?.accessToken
       ? (
           await responseHandler(
@@ -30,7 +33,8 @@ const ListingPage = async ({ params }: { params: IParams }) => {
         )?.map((item: SafeReservation) => item.id)
       : null;
     const list: SafeListing[] | null = await responseHandler(result);
-    console.log(list);
+    const reservation = await responseHandler(reservationData);
+
     if (!list) {
       return (
         <>
@@ -40,7 +44,11 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     }
     return (
       <div className="pt-[200px]">
-        <ListingClient listings={list} favList={ids} />
+        <ListingClient
+          listings={list}
+          favList={ids}
+          reservations={reservation}
+        />
       </div>
     );
   } catch (error) {

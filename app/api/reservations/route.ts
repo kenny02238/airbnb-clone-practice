@@ -15,7 +15,6 @@ export async function POST(req: any) {
       },
       body: JSON.stringify(body),
     });
-    console.log("response", response);
     return response;
   } catch (error) {
     console.log(error);

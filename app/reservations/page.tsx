@@ -10,11 +10,8 @@ interface IParams {
 
 const ListingPage = async ({ params }: { params: IParams }) => {
   const session = await getServerSession(authOptions);
-  console.log("session", session);
 
   try {
-    console.log(1);
-
     const result = await fetch(`${process.env.API_URL}reservations/owner/`, {
       method: "GET",
       headers: {

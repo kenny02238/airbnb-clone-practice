@@ -83,7 +83,6 @@ const SearchModal = () => {
       bathroomCount,
       search: "search",
     };
-    console.log("updatedQuery", updatedQuery);
 
     if (dateRange.startDate) {
       updatedQuery.startDate = format(dateRange.startDate, "yyyy-MM-dd");
