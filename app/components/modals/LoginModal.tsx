@@ -20,6 +20,7 @@ import Button from "../Button";
 
 const LoginModal = () => {
   const router = useRouter();
+
   const dispatch = useAppDispatch();
   const modalIsOpen = useAppSelector(
     (state) => state.isLoginModalOpenSlice.isOpen
@@ -55,12 +56,20 @@ const LoginModal = () => {
         }),
         {
           pending: "Logging in... 🚀🔐",
-          success: "Logged in! 🎉🔐",
-          error: "Failed to login 😢🔐",
         }
       );
 
       dispatch(onTransition(false));
+      toast.success(`🦄 logged in 🦄`, {
+        position: "top-center",
+        autoClose: 100000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } catch (err) {
       toast.error(`🦄 ${err}`, {
         position: "top-center",
@@ -76,7 +85,9 @@ const LoginModal = () => {
     setIsLoading(false);
   };
   const handleGoogleLogin = async () => {
-    await signIn("google");
+    await signIn("google", {
+      redirect: false,
+    });
   };
   const onToggle = useCallback(() => {
     loginModalClose();
@@ -88,7 +99,7 @@ const LoginModal = () => {
       <Heading title="Welcome back" subtitle="Login to your account!" />
       <Input
         id="email"
-        label="Email"
+        label="Email: Test@test.com"
         disabled={isLoading}
         register={register}
         errors={errors}
@@ -96,7 +107,7 @@ const LoginModal = () => {
       />
       <Input
         id="password"
-        label="Password"
+        label="Password: $Test"
         type="password"
         disabled={isLoading}
         register={register}

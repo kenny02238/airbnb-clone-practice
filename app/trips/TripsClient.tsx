@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 const currentUser = null;
 
 interface TripsClientProps {
-  listings?: SafeListing[] | null | any;
   reservations?: SafeReservation[];
 }
 

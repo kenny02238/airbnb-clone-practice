@@ -34,6 +34,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       : null;
     const list: SafeListing[] | null = await responseHandler(result);
     const reservation = await responseHandler(reservationData);
+    console.log("reservation", reservation);
 
     if (!list) {
       return (

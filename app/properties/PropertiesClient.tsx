@@ -8,7 +8,6 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface PropertiesClientProps {
-  listings?: SafeListing[] | null;
   reservations?: SafeReservation[];
 }
 

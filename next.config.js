@@ -5,6 +5,7 @@ const nextConfig = {
   },
   env: {
     API_URL: process.env.API_URL,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   },
   images: {
     // These are the default device/image sizes provided by Next.js.  Leaving them here for easier experimentation.
