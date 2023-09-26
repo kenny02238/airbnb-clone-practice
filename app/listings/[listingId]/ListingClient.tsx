@@ -12,6 +12,7 @@ import { toast, ToastContainer, Slide } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "@/app/redux/hook";
 import { responseHandler } from "@/utils/responseHandler";
 import { setWholeFavList } from "@/app/redux/features/userSession/userSessionSlice";
+import { onOpen as openLoginModal } from "@/app/redux/features/isLoginModalOpen/isLoginModalOpenSlice";
 const currentUser = null;
 const initialDateRange = {
   startDate: new Date(),
@@ -34,8 +35,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listings.price);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const userId = useAppSelector(
-    (state) => state.userSessionSlice.userData.user?.id
+  const userData = useAppSelector(
+    (state) => state.userSessionSlice.userData.authToken
   );
   useEffect(() => {
     dispatch(setWholeFavList(favList));
@@ -56,6 +57,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   const onCreateReservation = useCallback(async () => {
     setIsLoading(true);
+    if (!userData) {
+      dispatch(openLoginModal());
+      return null;
+    }
     try {
       const res = await toast.promise(
         fetch("/api/reservations/", {

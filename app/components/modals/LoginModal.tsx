@@ -60,9 +60,11 @@ const LoginModal = () => {
       );
 
       dispatch(onTransition(false));
+      if (res?.error) throw res.error;
+
       toast.success(`🦄 logged in 🦄`, {
         position: "top-center",
-        autoClose: 100000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -71,9 +73,9 @@ const LoginModal = () => {
         theme: "colored",
       });
     } catch (err) {
-      toast.error(`🦄 ${err}`, {
+      toast.error(`🦄 Login failed. 🦄`, {
         position: "top-center",
-        autoClose: 100000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

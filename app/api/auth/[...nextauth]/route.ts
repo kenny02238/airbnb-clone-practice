@@ -1,3 +1,4 @@
+import { th } from "date-fns/locale";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -29,12 +30,19 @@ export const authOptions: AuthOptions = {
             }),
           });
           const user = await login.json();
+          if (user.status_code) {
+            throw user.error[Object.keys(user.error)[0]][0];
+          }
+
           if (user) {
             return user;
           }
-          return null;
         } catch (err) {
-          console.log(err);
+          if (typeof err === "string") {
+            throw new Error(err);
+          } else {
+            throw new Error("An unknown error occurred.");
+          }
         }
       },
     }),
