@@ -153,10 +153,12 @@ const SearchModal = () => {
           title="When do you plan to go?"
           subtitle="Make sure everyone is free!"
         />
-        <Calendar
-          onChange={(value) => setDateRange(value.selection)}
-          value={dateRange}
-        />
+        <div className="flex justify-center">
+          <Calendar
+            onChange={(value) => setDateRange(value.selection)}
+            value={dateRange}
+          />
+        </div>
       </div>
     );
   }

@@ -36,7 +36,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const userData = useAppSelector(
-    (state) => state.userSessionSlice.userData.authToken
+    (state) => state.userSessionSlice.userData.user
   );
   useEffect(() => {
     dispatch(setWholeFavList(favList));
@@ -57,11 +57,15 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   const onCreateReservation = useCallback(async () => {
     setIsLoading(true);
-    if (!userData) {
-      dispatch(openLoginModal());
-      return null;
-    }
+
     try {
+      if (dateRange.startDate === dateRange.endDate) {
+        throw new Error("Start date and end date cannot be the same");
+      }
+      if (!userData) {
+        dispatch(openLoginModal());
+        return null;
+      }
       const res = await toast.promise(
         fetch("/api/reservations/", {
           method: "POST",
@@ -92,7 +96,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
     } catch (error) {
       toast.error(`🦄 ${error}`, {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

@@ -87,9 +87,7 @@ const LoginModal = () => {
     setIsLoading(false);
   };
   const handleGoogleLogin = async () => {
-    await signIn("google", {
-      redirect: false,
-    });
+    await signIn("google", { redirect: false });
   };
   const onToggle = useCallback(() => {
     loginModalClose();
@@ -101,7 +99,7 @@ const LoginModal = () => {
       <Heading title="Welcome back" subtitle="Login to your account!" />
       <Input
         id="email"
-        label="Email: Test@test.com"
+        label="Email: testaccount@gmail.com"
         disabled={isLoading}
         register={register}
         errors={errors}
@@ -109,7 +107,7 @@ const LoginModal = () => {
       />
       <Input
         id="password"
-        label="Password: $Test"
+        label="Password: Test1234"
         type="password"
         disabled={isLoading}
         register={register}
@@ -133,6 +131,7 @@ const LoginModal = () => {
         label="Continue with Github"
         icon={AiFillGithub}
         onClick={() => signIn("github")}
+        disabled
       />
       <div
         className="

@@ -51,17 +51,27 @@ const RegisterModal = () => {
         }),
         {
           pending: "🦄註冊中🦄",
-          success: "🦄成功註冊🦄",
-          error: "🦄註冊失敗🦄",
         }
       );
+      const response = await responseHandler(res);
+      console.log("response", response);
 
-      await responseHandler(res);
+      toast.success("🦄成功註冊🦄", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
       registerModalClose();
     } catch (err) {
-      toast.error(`🦄${err}🦄`, {
+      toast.success(`🦄註冊失敗${err}🦄`, {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -126,6 +136,7 @@ const RegisterModal = () => {
         label="Continue with Github"
         icon={AiFillGithub}
         onClick={() => {}}
+        disabled
       />
       <div
         className="
